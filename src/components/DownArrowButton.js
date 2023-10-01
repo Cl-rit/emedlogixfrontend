@@ -9,7 +9,7 @@ const DownArrowButton = () => {
   useEffect(() => {
     // Add an event listener to track scroll position
     const handleScroll = () => {
-      if (window.scrollY < 100) {
+      if (window.scrollY < 150) {
         setIsVisible(true);
       } else {
         setIsVisible(false);

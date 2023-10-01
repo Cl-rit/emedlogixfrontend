@@ -287,14 +287,14 @@ const Search1 = (props) => {
   };
   function handleclick() {}
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
-  const componentWidth = isSmOrMd ? "50%" : "70%";
-
+  const componentWidth = isSmOrMd ? "65%" : "70%";
+  const componentMargin = isSmOrMd ? 1 : 3;
   return (
     <>
       <Box
         sx={{
           height: "80px",
-          ml: 3,
+          ml: componentMargin,
           width: componentWidth,
         }}
       >

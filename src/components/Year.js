@@ -7,7 +7,7 @@ import {
   InputAdornment,
   styled,
   useTheme,
-  Box,
+  useMediaQuery,
 } from "@mui/material";
 
 const StyledSelect = styled(Select)(({ theme }) => ({
@@ -71,9 +71,11 @@ export const Year = () => {
 
   global.years = selectedYear;
   console.log(global.years);
+  const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const componentMargin = isSmOrMd ? 1 : 5;
   return (
     <div>
-      <FormControl sx={{ ml: 5 }}>
+      <FormControl sx={{ ml: componentMargin }}>
         <StyledSelect
           labelId="year-dropdown-label"
           id="year-dropdown"
