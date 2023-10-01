@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Box, TextField, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
-import "../App.css";
+
 import { Loads } from "./Loads";
 import { Alphabetdrug } from "./Alphabetdrug";
 import { flexStart } from "../themes/commonStyles";
@@ -156,9 +156,16 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "100%" : "48vw";
+  const scrollToTop = () => {
+    setTimeout(() => {
+      if (isSmOrMd) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+      }
+    }, 500);
+  };
   return (
     <>
-      {" "}
       <Box>
         {global.values && global.values.code == "null" ? (
           <Alphabetdrug setSelectedCode={setSelectedCode} />
@@ -370,9 +377,10 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
                               {chunk[colIndex] !== "--" ? (
                                 <a
                                   style={{ borderBottom: "0.5px solid blue" }}
-                                  onClick={() =>
-                                    handleCodeClick(chunk[colIndex])
-                                  }
+                                  onClick={() => {
+                                    handleCodeClick(chunk[colIndex]);
+                                    scrollToTop(); // Call scrollToTop when the link is clicked
+                                  }}
                                 >
                                   {chunk[colIndex]}
                                 </a>
@@ -409,7 +417,10 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
                                 style={{
                                   borderBottom: "0.5px solid blue",
                                 }}
-                                onClick={() => handleCodeClick(value)}
+                                onClick={() => {
+                                  handleCodeClick(value);
+                                  scrollToTop(); // Call scrollToTop when the link is clicked
+                                }}
                               >
                                 {value}
                               </a>

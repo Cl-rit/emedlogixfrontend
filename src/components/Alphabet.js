@@ -1,5 +1,5 @@
 import { Tab, Tabs, TextField } from "@mui/material";
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Codenotes1 from "./codenotes1";
 import Sectionnotes1 from "./Sectionnotes1";
@@ -10,11 +10,6 @@ const StyledTabs = styled((props) => (
     TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
     sx={{
       height: "0px",
-      MuiTab: {
-        root: {
-          minHeight: 70,
-        },
-      },
     }}
   />
 ))({
@@ -26,7 +21,7 @@ const StyledTabs = styled((props) => (
   "& .MuiTabs-indicatorSpan": {
     maxWidth: 40,
     width: "100%",
-    backgroundColor: "#635ee7",
+    backgroundColor: "#4185D2",
   },
 });
 function CustomTabPanel(props) {
@@ -36,12 +31,12 @@ function CustomTabPanel(props) {
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
+      hidden={false}
       id={panelId}
       aria-labelledby={tabId}
       {...other}
     >
-      {value === index && <div>{children}</div>}
+      {children}
     </div>
   );
 }
@@ -60,32 +55,105 @@ function a11yProps(index) {
 export const Alphabet = ({ setSelectedCode }) => {
   const [value, setValue] = useState(0);
   const [search, setSearch] = useState("");
-  const [selectedCodeDetails, setSelectedCodeDetails] = useState(null);
-  const tabLabels = Array.from({ length: 26 }, (_, i) =>
-    String.fromCharCode(97 + i)
-  );
-  const codenotes1Table = useMemo(
-    () => <Codenotes1 onCodeClick={setSelectedCode} />,
-    [search]
-  );
-  const Sectionnotes1Table = useMemo(() => {
-    return <Sectionnotes1 onCodeClick={setSelectedCode} />;
+  // const [filteredResults, setFilteredResults] = useState([]);
+
+  //const [selectedCodeDetails, setSelectedCodeDetails] = useState(null);
+  // const tabLabels = Array.from({ length: 26 }, (_, i) =>
+  //   String.fromCharCode(97 + i)
+  // );
+
+  // const lowercaseSearch = search.toLowerCase();
+  // const codenotes1Table = useMemo(
+  //   () => (
+  //     <Codenotes1
+  //       onCodeClick={setSelectedCode}
+  //       filter={lowercaseSearch}
+  //       setFilteredResults={setFilteredResults}
+  //     />
+  //   ),
+  //   [lowercaseSearch]
+  // );
+  // const Sectionnotes1Table = useMemo(() => {
+  //   return (
+  //     <Sectionnotes1
+  //       onCodeClick={setSelectedCode}
+  //       filter={lowercaseSearch}
+  //       setFilteredResults={setFilteredResults}
+  //     />
+  //   );
+  // }, [lowercaseSearch]);
+
+  const tabLabels = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+  ];
+  const tabComponents = tabLabels.map((label) => {
+    if (label === "a") {
+      return <Codenotes1 onCodeClick={setSelectedCode} filterText={search} />;
+    } else {
+      return (
+        <Sectionnotes1 onCodeClick={setSelectedCode} filterText={search} />
+      );
+    }
+  });
+  useEffect(() => {
+    // Automatically switch to the tab starting with the first letter of the filter text
+    const firstLetter = search.charAt(0).toLowerCase();
+    const tabIndex = tabLabels.indexOf(firstLetter);
+    if (tabIndex !== -1) {
+      setValue(tabIndex);
+    }
   }, [search]);
 
+  // const handleSearchChange = (event) => {
+  //   const searchText = event.target.value.toLowerCase();
+  //   setSearch(searchText);
+
+  //   // Set global.clickedTab2 to the search text itself
+  //   global.clickedTab2 = searchText;
+  // };
   const handleChange = (event, newValue) => {
     setValue(newValue);
     const clickedTabLabel = tabLabels[newValue];
     console.log("Tab clicked: ", clickedTabLabel);
-    global.clickedTab = clickedTabLabel;
+    global.clickedTab2 = clickedTabLabel;
   };
-  console.log(global.clickedTab);
+  const handleSearchChange = (event) => {
+    const searchText = event.target.value.toLowerCase();
+    setSearch(searchText);
+    global.clickedTab2 = searchText;
+    // console.log(global.clickedTab);
 
-  console.log(search);
-  global.searches = search;
-  const handleCodeDetailsUpdate = (details) => {
-    setSelectedCodeDetails(details);
+    // console.log(search);
+    // global.searches = search;
+    // const handleCodeDetailsUpdate = (details) => {
+    //   setSelectedCodeDetails(details);
+    // };
   };
-
   return (
     <div>
       <div style={{ marginTop: 20 }}>
@@ -99,7 +167,8 @@ export const Alphabet = ({ setSelectedCode }) => {
             },
           }}
           placeholder=" Use Filter"
-          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+          onChange={handleSearchChange}
           aria-label="Search"
         />
       </div>
@@ -140,11 +209,16 @@ export const Alphabet = ({ setSelectedCode }) => {
           backgroundColor: "#C7E1ED",
         }}
       >
-        {tabLabels.map((label, index) => (
-          <CustomTabPanel key={label} value={value} index={index}>
-            {label === "a" ? codenotes1Table : Sectionnotes1Table}
+        {tabComponents.map((component, index) => (
+          <CustomTabPanel key={index} value={value} index={index}>
+            {value === index && component}
           </CustomTabPanel>
         ))}
+        {/* {tabLabels.map((label, index) => (
+          <CustomTabPanel key={label} value={value} index={index}>
+            {label.toLowerCase() === "a" ? codenotes1Table : Sectionnotes1Table}
+          </CustomTabPanel>
+        ))} */}
       </div>
     </div>
   );

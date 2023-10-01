@@ -1,6 +1,8 @@
 import { Box, useMediaQuery } from "@mui/material";
 import React, { Fragment, useState } from "react";
 import { flexStart } from "../themes/commonStyles";
+import { Loads } from "./Loads";
+
 const removeDuplicates = (arr) => {
   const seen = new Set();
   return arr.filter((item) => {
@@ -45,12 +47,14 @@ const renderChildRows = (row, depthLevel = 1) => {
   }
   return null;
 };
-const Codenotes1 = ({ onCodeClick }) => {
+const Codenotes1 = ({ onCodeClick, filterText }) => {
   const [index1, setIndex1] = useState(null);
   const [fetchedData, setFetchedData] = useState(null);
   const [clickedCode, setClickedCode] = useState(null);
   const [index, setIndex] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const Code = (global.values?.code || "").replace(/[-.]/g, "");
+
   React.useEffect(() => {
     console.log("enter index table");
     const fetchBooks = async () => {
@@ -102,15 +106,18 @@ const Codenotes1 = ({ onCodeClick }) => {
         }
       } catch (error) {
         console.error("Error:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
+    setIsLoading(true);
     // Clear the previous index data before fetching new data
     setIndex1(null);
     fetchBooks();
   }, []);
   console.log("our index1 is", index1);
   console.log(global.searches);
-  const search = global.searches;
+  //const search = global.searches;
   const fetchCodeDetails = async (code) => {
     try {
       if (code) {
@@ -136,9 +143,15 @@ const Codenotes1 = ({ onCodeClick }) => {
   };
   // Filter out duplicate rows based on the "code" and "title"
   const filteredIndexRows = removeDuplicates(index1 || []);
-
+  const filteredIndex1 = index1?.filter((item) => {
+    return (
+      filterText.toLowerCase() === "" ||
+      item.title.toLowerCase().includes(filterText.toLowerCase())
+    );
+  });
   const handleCodeClick = async (code) => {
     setClickedCode(code);
+    setFetchedData(null); // Reset fetchedData to null
 
     fetchCodeDetails(code); // Call the function to fetch code details
     global.intable = null;
@@ -158,9 +171,16 @@ const Codenotes1 = ({ onCodeClick }) => {
 
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "100%" : "45vw";
+  const scrollToTop = () => {
+    setTimeout(() => {
+      if (isSmOrMd) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+      }
+    }, 1000);
+  };
   return (
     <>
-      {" "}
       <Box sx={{ ...flexStart, mt: 2, ml: 1 }}>
         <div
           style={{
@@ -169,13 +189,17 @@ const Codenotes1 = ({ onCodeClick }) => {
         >
           <tbody style={{ textAlign: "left" }}>
             {!global.values?.code &&
-              index1
-                ?.filter((item) => {
-                  return search.toLowerCase() === ""
-                    ? item
-                    : item.title.toLowerCase().includes(search);
-                })
-                .map((row) => (
+              // index1
+              //   ?.filter((item) => {
+              //     const titleLowerCase = item.title.toLowerCase();
+              //     const searchLowerCase = search.toLowerCase();
+              //     return (
+              //       searchLowerCase === "" ||
+              //       titleLowerCase.includes(searchLowerCase)
+              //     );
+              //   })
+              filteredIndex1?.map((row) => {
+                return (
                   <Fragment key={row.id}>
                     {row.ismainterm && ( // Check if ismainterm is true
                       <tr>
@@ -220,14 +244,17 @@ const Codenotes1 = ({ onCodeClick }) => {
                             </a>
                           </td>
                         )}
-                        {row.code !== null && row.code !== "null" && (
+                        {row.code && (
                           <td style={{ marginRight: "10px" }}>
                             <a
                               style={{
                                 color: "blue",
                                 borderBottom: "1px solid blue",
                               }}
-                              onClick={() => handleCodeClick(row.code)}
+                              onClick={() => {
+                                handleCodeClick(row.code);
+                                scrollToTop();
+                              }}
                             >
                               {row.code}
                             </a>
@@ -237,9 +264,11 @@ const Codenotes1 = ({ onCodeClick }) => {
                     )}
                     {row.ismainterm && renderChildRows(row)}
                   </Fragment>
-                ))}
+                );
+              })}
           </tbody>
-        </div>{" "}
+          <Box sx={{ ml: -10 }}>{isLoading && <Loads />}</Box>
+        </div>
       </Box>
     </>
   );

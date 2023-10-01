@@ -12,10 +12,18 @@ const All = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isDrugCodeClicked, setIsDrugCodeClicked] = useState(false);
   const [isValueSelected, setIsValueSelected] = useState(false);
+  const [isNeoplasmButtonActive, setIsNeoplasmButtonActive] = useState(false);
+  const [isDrugButtonActive, setIsDrugButtonActive] = useState(false);
 
   // Define a callback function to update Main
   const handleSelectedItemChange = (newSelectedItem) => {
     setSelectedItem(newSelectedItem);
+  };
+  const handleNeoplasmCodeClick = (isActive) => {
+    setIsNeoplasmButtonActive(isActive);
+  };
+  const handleDrugCodeClick = (isActive) => {
+    setIsDrugButtonActive(isActive);
   };
   return (
     <div>
@@ -28,16 +36,19 @@ const All = () => {
           isNeoplasmCodeClicked={isNeoplasmCodeClicked}
           selectedItem={selectedItem}
           isDrugCodeClicked={isDrugCodeClicked}
-          onSelectedItemChange={handleSelectedItemChange} // Pass the callback
+          onSelectedItemChange={handleSelectedItemChange}
+          onNeoplasmCodeClick={handleNeoplasmCodeClick} // Pass the callback // Pass the callback
+          onDrugCodeClick={handleDrugCodeClick}
         />
       </Box>
       <Box sx={{ ...flexCenter }}>
         <Main
           isValueSelected={isValueSelected}
           refreshMain={refreshMain}
-          isNeoplasmCodeClicked={isNeoplasmCodeClicked}
+          // isNeoplasmCodeClicked={isNeoplasmCodeClicked}
           selectedItem={selectedItem}
-          isDrugCodeClicked={isDrugCodeClicked}
+          isDrugCodeClicked={isDrugButtonActive}
+          isNeoplasmCodeClicked={isNeoplasmButtonActive} // Pass the state to Main
         />
       </Box>
     </div>

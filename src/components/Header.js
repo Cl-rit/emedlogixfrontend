@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 
 import { flexBetweenAlign, flexBetweenAlign1 } from "../themes/commonStyles";
-import { Avatar, IconButton } from "@mui/material";
-import { deepPurple } from "@mui/material/colors";
 
 export const Header = () => {
   const [first, setfirst] = useState(null);

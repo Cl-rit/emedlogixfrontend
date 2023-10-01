@@ -127,7 +127,14 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "100%" : "45vw";
-
+  const scrollToTop = () => {
+    setTimeout(() => {
+      if (isSmOrMd) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+      }
+    }, 1000);
+  };
   return (
     <>
       {!global.values || !global.values.code ? (
@@ -228,7 +235,10 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
                                 color: "blue",
                                 borderBottom: "1px solid blue",
                               }}
-                              onClick={() => handleCodeClick(row.code)}
+                              onClick={() => {
+                                handleCodeClick(row.code);
+                                scrollToTop();
+                              }}
                             >
                               {row.code !== null &&
                                 row.code !== "null" &&

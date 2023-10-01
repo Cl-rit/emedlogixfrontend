@@ -131,6 +131,14 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
 
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "100%" : "48vw";
+  const scrollToTop = () => {
+    setTimeout(() => {
+      if (isSmOrMd) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+      }
+    }, 500);
+  };
   return (
     <>
       <Box>
@@ -355,9 +363,10 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
                                   style={{
                                     borderBottom: "0.5px solid blue",
                                   }}
-                                  onClick={() =>
-                                    handleCodeClick(chunk[colIndex])
-                                  }
+                                  onClick={() => {
+                                    handleCodeClick(chunk[colIndex]);
+                                    scrollToTop(); // Call scrollToTop when the link is clicked
+                                  }}
                                 >
                                   {chunk[colIndex]}
                                 </a>
@@ -394,7 +403,10 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
                                 style={{
                                   borderBottom: "0.5px solid blue",
                                 }}
-                                onClick={() => handleCodeClick(value)}
+                                onClick={() => {
+                                  handleCodeClick(value);
+                                  scrollToTop(); // Call scrollToTop when the link is clicked
+                                }}
                               >
                                 {value}
                               </a>

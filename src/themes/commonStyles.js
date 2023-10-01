@@ -1,4 +1,8 @@
 /** Flexbox styles */
+export const Table = {
+  border: "1px solid black",
+  textAlign: "center",
+};
 
 export const flexBetween = {
   display: "flex",
@@ -26,12 +30,12 @@ export const flexBetweenCenter = {
   alignItems: "center",
 };
 
-export const footerLayout = {
-  display: "flex",
-  flexDirection: { sx: "column" },
-  justifyContent: { xs: "center", md: "space-between" },
-  alignItems: "center",
-};
+// export const footerLayout = {
+//   display: "flex",
+//   flexDirection: { sx: "column" },
+//   justifyContent: { xs: "center", md: "space-between" },
+//   alignItems: "center",
+// };
 
 export const flexCenter = {
   display: "flex",
@@ -39,17 +43,17 @@ export const flexCenter = {
   alignItems: "center",
 };
 
-export const fullWidthFlex = {
-  display: "flex",
-  width: "100%",
-};
+// export const fullWidthFlex = {
+//   display: "flex",
+//   width: "100%",
+// };
 
-export const justifyCenter = { display: "flex", justifyContent: "center" };
+// export const justifyCenter = { display: "flex", justifyContent: "center" };
 
-export const dFlex = {
-  display: "flex",
-  flexDirection: "row",
-};
+// export const dFlex = {
+//   display: "flex",
+//   flexDirection: "row",
+// };
 
 // export const fixedBottom = {
 //   position: "absolute",
@@ -57,7 +61,7 @@ export const dFlex = {
 //   width: "100%",
 // };
 
-export const displayOnDesktop = { display: { xs: "none", md: "block" } };
+// export const displayOnDesktop = { display: { xs: "none", md: "block" } };
 
 /** Custom carousel styles */
 
@@ -84,7 +88,3 @@ export const displayOnDesktop = { display: { xs: "none", md: "block" } };
 //   width: "100%",
 //   borderRadius: 3,
 // };
-export const Table = {
-  border: "1px solid black",
-  textAlign: "center",
-};

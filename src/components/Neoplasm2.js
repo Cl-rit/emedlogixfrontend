@@ -6,13 +6,11 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { flexStart } from "../themes/commonStyles";
 import { useState } from "react";
-import "../App.css";
 import { Loads } from "./Loads";
-import { Alphabet } from "./Alphabet";
-import { Alphabetneo } from "./Alphabetneo";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -35,7 +33,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     height: 1,
   },
 }));
-export default function Neoplasm2({ onCodeClick }) {
+export default function Neoplasm2({ onCodeClick, filterText }) {
   const [neo, setNeo] = useState(null);
   const [neo1, setNeo1] = useState(null);
   const [clickedCode, setClickedCode] = useState(null);
@@ -43,12 +41,25 @@ export default function Neoplasm2({ onCodeClick }) {
   const [fetchedData, setFetchedData] = useState(null);
   const Code1 = (global.values?.code || "").replace(/[-.]/g, "");
 
+  const filteredNeo = neo?.filter((item) => {
+    return (
+      filterText.toLowerCase() === "" ||
+      item.title.toLowerCase().includes(filterText.toLowerCase())
+    );
+  });
+
+  const filteredNeo1 = neo1?.filter((item) => {
+    return (
+      filterText.toLowerCase() === "" ||
+      item.title.toLowerCase().includes(filterText.toLowerCase())
+    );
+  });
   React.useEffect(() => {
     const fetchBooks = async () => {
       try {
         if (global.values.code == null || global.values.code == "null") {
           const response = await fetch(
-            `/codes/alldetails/neoplasm?title=${global.clickedTab1}`,
+            `/codes/alldetails/neoplasm?title=${global.clickedTab2}`,
             {
               method: "GET",
               headers: {
@@ -73,12 +84,14 @@ export default function Neoplasm2({ onCodeClick }) {
     fetchBooks();
   }, []);
   console.log("our neo1 is", neo1);
+  //const search = global.searches;
+
   const [word, setWord] = useState("");
-  const [search, setSearch] = useState("");
+  // // const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  function handleChange(e) {
-    setWord(e.target.value);
-  }
+  // function handleChange(e) {
+  //   setWord(e.target.value);
+  // }
   function getTitleFromNestedChild(row) {
     if (row.child?.child?.child?.child?.code) {
       return `${row.child.title}-${row.child.child.title}-${row.child.child.child.title}-${row.child.child.child.child.title}`;
@@ -133,6 +146,14 @@ export default function Neoplasm2({ onCodeClick }) {
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "100%" : "48vw";
+  const scrollToTop = () => {
+    setTimeout(() => {
+      if (isSmOrMd) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+      }
+    }, 500);
+  };
   return (
     <>
       {/* <Box sx={{ width: "120px", height: "22%", mt: "-47px", ml: "5px" }}>
@@ -223,107 +244,108 @@ export default function Neoplasm2({ onCodeClick }) {
             </TableHead>
             <TableBody>
               {global.values.code !== null &&
-                neo
-                  ?.filter((item) => {
-                    return (
-                      search.toLowerCase() === "" ||
-                      item.title.toLowerCase().includes(search)
-                    );
-                  })
-                  .map((row) => {
-                    const hasValidParentCode =
-                      row.code && row.code[0] !== "null";
-                    const hasValidChildCode =
-                      row.child &&
-                      row.child.code &&
-                      row.child.code[0] !== "null";
-                    const hasValidChildChildCode =
-                      row.child &&
-                      row.child.child &&
-                      row.child.child.code &&
-                      row.child.child.code[0] !== "null";
-                    const hasValidChildChildChildCode =
-                      row.child &&
-                      row.child.child &&
-                      row.child.child.child &&
-                      row.child.child.child.code &&
-                      row.child.child.child.code[0] !== "null";
-                    const hasValidChildChildChildChildCode =
-                      row.child &&
-                      row.child.child &&
-                      row.child.child.child &&
-                      row.child.child.child.child &&
-                      row.child.child.child.child.code &&
-                      row.child.child.child.child.code[0] !== "null";
+                // neo
+                //   ?.filter((item) => {
+                //     return (
+                //       search.toLowerCase() === "" ||
+                //       item.title.toLowerCase().includes(search)
+                //     );
+                //   })
+                //   .map((row) => {
 
-                    if (
-                      !(
-                        hasValidParentCode ||
-                        hasValidChildCode ||
-                        hasValidChildChildCode ||
-                        hasValidChildChildChildCode ||
-                        hasValidChildChildChildChildCode
-                      )
-                    ) {
-                      return null;
-                    }
+                filteredNeo?.map((row) => {
+                  const hasValidParentCode = row.code && row.code[0] !== "null";
+                  const hasValidChildCode =
+                    row.child && row.child.code && row.child.code[0] !== "null";
+                  const hasValidChildChildCode =
+                    row.child &&
+                    row.child.child &&
+                    row.child.child.code &&
+                    row.child.child.code[0] !== "null";
+                  const hasValidChildChildChildCode =
+                    row.child &&
+                    row.child.child &&
+                    row.child.child.child &&
+                    row.child.child.child.code &&
+                    row.child.child.child.code[0] !== "null";
+                  const hasValidChildChildChildChildCode =
+                    row.child &&
+                    row.child.child &&
+                    row.child.child.child &&
+                    row.child.child.child.child &&
+                    row.child.child.child.child.code &&
+                    row.child.child.child.child.code[0] !== "null";
 
-                    const codeDetails = (
+                  if (
+                    !(
+                      hasValidParentCode ||
+                      hasValidChildCode ||
+                      hasValidChildChildCode ||
+                      hasValidChildChildChildCode ||
                       hasValidChildChildChildChildCode
-                        ? row.child.child.child.child.code
-                        : hasValidChildChildChildCode
-                        ? row.child.child.child.code
-                        : hasValidChildChildCode
-                        ? row.child.child.code
-                        : hasValidChildCode
-                        ? row.child.code
-                        : row.code
-                    ).join(", ");
+                    )
+                  ) {
+                    return null;
+                  }
 
-                    const chunkedCodeDetails = codeDetails
-                      .split(", ")
-                      .reduce((acc, code) => {
-                        if (!acc.length || acc[acc.length - 1].length === 6) {
-                          acc.push([code]);
-                        } else {
-                          acc[acc.length - 1].push(code);
-                        }
-                        return acc;
-                      }, []);
-                    return chunkedCodeDetails.map((chunk, index) => (
-                      <StyledTableRow key={`${row.id}_${index}`}>
-                        <StyledTableCell component="th" scope="row">
-                          {getTitleFromNestedChild(row)}
-                        </StyledTableCell>
-                        {Array.from({ length: 6 }).map((_, colIndex) => (
-                          <StyledTableCell
-                            key={`${row.id}_${index}_${colIndex}`}
-                            sx={{
-                              border: "1px solid grey",
+                  const codeDetails = (
+                    hasValidChildChildChildChildCode
+                      ? row.child.child.child.child.code
+                      : hasValidChildChildChildCode
+                      ? row.child.child.child.code
+                      : hasValidChildChildCode
+                      ? row.child.child.code
+                      : hasValidChildCode
+                      ? row.child.code
+                      : row.code
+                  ).join(", ");
+
+                  const chunkedCodeDetails = codeDetails
+                    .split(", ")
+                    .reduce((acc, code) => {
+                      if (!acc.length || acc[acc.length - 1].length === 6) {
+                        acc.push([code]);
+                      } else {
+                        acc[acc.length - 1].push(code);
+                      }
+                      return acc;
+                    }, []);
+                  return chunkedCodeDetails.map((chunk, index) => (
+                    <StyledTableRow key={`${row.id}_${index}`}>
+                      <StyledTableCell component="th" scope="row">
+                        {getTitleFromNestedChild(row)}
+                      </StyledTableCell>
+                      {Array.from({ length: 6 }).map((_, colIndex) => (
+                        <StyledTableCell
+                          key={`${row.id}_${index}_${colIndex}`}
+                          sx={{
+                            border: "1px solid grey",
+                          }}
+                          align="center"
+                        >
+                          <a
+                            style={{
+                              borderBottom: "0.5px solid blue",
                             }}
-                            align="center"
+                            onClick={() => handleCodeClick(chunk[colIndex])}
                           >
-                            <a
-                              style={{
-                                borderBottom: "0.5px solid blue",
-                              }}
-                              onClick={() => handleCodeClick(chunk[colIndex])}
-                            >
-                              {chunk[colIndex] || "-"}
-                            </a>
-                          </StyledTableCell>
-                        ))}
-                      </StyledTableRow>
-                    ));
-                  })}
+                            {chunk[colIndex] || "-"}
+                          </a>
+                        </StyledTableCell>
+                      ))}
+                    </StyledTableRow>
+                  ));
+                })}
               {global.values.code !== null &&
-                neo1
-                  ?.filter((item) => {
-                    return search.toLowerCase() === ""
-                      ? item
-                      : item.title.toLowerCase().includes(search);
-                  })
-                  .map((row) => (
+                // neo1
+                //   ?.filter((item) => {
+                //     return search.toLowerCase() === ""
+                //       ? item
+                //       : item.title.toLowerCase().includes(search);
+                //   })
+                //   .map((row) => (
+                filteredNeo1?.map((row) => {
+                  return (
                     <StyledTableRow key={row.id}>
                       <StyledTableCell component="th" scope="row">
                         {row.title}
@@ -341,7 +363,10 @@ export default function Neoplasm2({ onCodeClick }) {
                               style={{
                                 borderBottom: "0.5px solid blue",
                               }}
-                              onClick={() => handleCodeClick(value)}
+                              onClick={() => {
+                                handleCodeClick(value);
+                                scrollToTop(); // Call scrollToTop when the link is clicked
+                              }}
                             >
                               {value}
                             </a>
@@ -351,10 +376,11 @@ export default function Neoplasm2({ onCodeClick }) {
                         </StyledTableCell>
                       ))}
                     </StyledTableRow>
-                  ))}
+                  );
+                })}
             </TableBody>
           </Table>{" "}
-          {/* {isLoading && <Loads />} */}
+          {isLoading && <Loads />}
           {global.values?.code !== null && neo && neo.length === 0 && (
             <Typography
               marginLeft="10vw"

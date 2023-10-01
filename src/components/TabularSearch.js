@@ -6,7 +6,6 @@ import Codenotes from "./Codenotes";
 import Sectionnotes from "./Sectionnotes";
 import Chapternotes from "./Chapternotes";
 import { styled } from "@mui/material/styles";
-import { flexCenter } from "../themes/commonStyles";
 
 const StyledTabs = styled((props) => (
   <Tabs
@@ -23,7 +22,7 @@ const StyledTabs = styled((props) => (
   "& .MuiTabs-indicatorSpan": {
     maxWidth: 40,
     width: "100%",
-    backgroundColor: "#635ee7",
+    backgroundColor: "#4185D2",
   },
 });
 

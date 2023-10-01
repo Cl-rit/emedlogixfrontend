@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 // import "../App.css";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import Main from "./Main";
+import PropTypes from "prop-types"; // Import PropTypes
 
 const Search1 = (props) => {
   const [result, setResult] = useState([]);
@@ -166,56 +166,126 @@ const Search1 = (props) => {
   //   });
   // };
 
+  // if (setIsDescriptionFetched) {
+  //   window.sortOptions = (options, typedValue) => {
+  //     const typedValueLower = typedValue.toLowerCase();
+  //     const sanitizedTypedValue = typedValueLower.replace(/['s-]/g, "");
+
+  //     return options.sort((a, b) => {
+  //       // Check if either 'a' or 'b' has a type property equal to "ismainterm"
+  //       if (a.type === "ismainterm") {
+  //         return -1; // 'a' comes before 'b'
+  //       } else if (b.type === "ismainterm") {
+  //         return 1; // 'b' comes before 'a'
+  //       }
+
+  //       const aContent = `${a.title || ""} ${a.description || ""} ${
+  //         a.alterDescription || ""
+  //       }`;
+  //       const bContent = `${b.title || ""} ${b.description || ""} ${
+  //         b.alterDescription || ""
+  //       }`;
+  //       const aLower = aContent.toLowerCase();
+  //       const bLower = bContent.toLowerCase();
+
+  //       // Preprocess the content of a and b to ignore 's and hyphens
+  //       const aContentSanitized = aLower.replace(/['s-]/g, "");
+  //       const bContentSanitized = bLower.replace(/['s-]/g, "");
+
+  //       // Calculate how well a and b match the typed value
+  //       const matchScoreA = aContentSanitized.includes(sanitizedTypedValue)
+  //         ? 1
+  //         : 0;
+  //       const matchScoreB = bContentSanitized.includes(sanitizedTypedValue)
+  //         ? 1
+  //         : 0;
+
+  //       // Sort in descending order of match score
+  //       if (matchScoreA > matchScoreB) return -1;
+  //       if (matchScoreA < matchScoreB) return 1;
+
+  //       // If match scores are equal, sort alphabetically
+  //       return aLower.localeCompare(bLower);
+  //     });
+  //   };
+  // }
   if (setIsDescriptionFetched) {
     window.sortOptions = (options, typedValue) => {
-      const typedValueLower = typedValue.toLowerCase();
+      const typedValueLower = typedValue ? typedValue.toLowerCase() : "";
       const sanitizedTypedValue = typedValueLower.replace(/['s-]/g, "");
 
       return options.sort((a, b) => {
-        // Check if either 'a' or 'b' has a type property equal to "ismainterm"
-        if (a.type === "ismainterm") {
-          return -1; // 'a' comes before 'b'
-        } else if (b.type === "ismainterm") {
-          return 1; // 'b' comes before 'a'
-        }
-
-        const aContent = `${a.title || ""} ${a.description || ""} ${
-          a.alterDescription || ""
-        }`;
-        const bContent = `${b.title || ""} ${b.description || ""} ${
-          b.alterDescription || ""
-        }`;
-        const aLower = aContent.toLowerCase();
-        const bLower = bContent.toLowerCase();
-
-        // Preprocess the content of a and b to ignore 's and hyphens
+        const aTitle =
+          (a.title ||
+            a.description ||
+            a.alterDescription ||
+            a.see ||
+            a.seealso) ??
+          "";
+        const bTitle =
+          (b.title ||
+            b.description ||
+            b.alterDescription ||
+            b.see ||
+            b.seealso) ??
+          "";
+        const aLower = aTitle.toLowerCase();
+        const bLower = bTitle.toLowerCase();
         const aContentSanitized = aLower.replace(/['s-]/g, "");
         const bContentSanitized = bLower.replace(/['s-]/g, "");
 
-        // Calculate how well a and b match the typed value
-        const matchScoreA = aContentSanitized.includes(sanitizedTypedValue)
-          ? 1
-          : 0;
-        const matchScoreB = bContentSanitized.includes(sanitizedTypedValue)
-          ? 1
-          : 0;
+        // Check if any part of the user-typed value matches with "ismainTerm" options
+        const matchesA =
+          a.type === "ismainterm" &&
+          aContentSanitized.includes(sanitizedTypedValue);
+        const matchesB =
+          b.type === "ismainterm" &&
+          bContentSanitized.includes(sanitizedTypedValue);
 
-        // Sort in descending order of match score
-        if (matchScoreA > matchScoreB) return -1;
-        if (matchScoreA < matchScoreB) return 1;
+        if (matchesA && !matchesB) return -1;
+        if (matchesB && !matchesA) return 1;
 
-        // If match scores are equal, sort alphabetically
-        return aLower.localeCompare(bLower);
+        if (aContentSanitized === sanitizedTypedValue) return -1;
+        if (bContentSanitized === sanitizedTypedValue) return 1;
+
+        return aContentSanitized.localeCompare(bContentSanitized);
       });
     };
   }
-
+  /* differ from kps*/
   const HandleClick = () => {
     setisNeoplasmCodeClicked(true);
   };
   const HandleClicks = () => {
     setisDrugCodeClicked(true);
   };
+  const handleSelectedItemChange = (newSelectedItem) => {
+    setSelectedItem(newSelectedItem);
+    setIsValueSelected(true);
+
+    // Check if the selectedItem has 'Neoplasm' in its description or 'seealso'
+    if (
+      newSelectedItem &&
+      (newSelectedItem.description?.includes("Neoplasm") ||
+        newSelectedItem.seealso?.includes("Neoplasm") ||
+        newSelectedItem.see?.includes("Neoplasm"))
+    ) {
+      props.onNeoplasmCodeClick(true);
+      props.onDrugCodeClick(false); // Activate the Neoplasm button
+    } else if (
+      newSelectedItem &&
+      (newSelectedItem.description?.includes("Drug") ||
+        newSelectedItem.seealso?.includes("Drug") ||
+        newSelectedItem.see?.includes("Drug"))
+    ) {
+      props.onDrugCodeClick(true); // Activate the Neoplasm button
+      props.onNeoplasmCodeClick(false);
+    } else {
+      props.onNeoplasmCodeClick(false);
+      props.onDrugCodeClick(false);
+    }
+  };
+  function handleclick() {}
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "50%" : "70%";
 
@@ -310,7 +380,7 @@ const Search1 = (props) => {
                       style={{ cursor: "pointer" }}
                     />
                   ) : (
-                    <SearchIcon />
+                    <SearchIcon sx={{ cursor: "context-menu" }} />
                   )}
                 </InputAdornment>
               ),
@@ -330,8 +400,8 @@ const Search1 = (props) => {
             }
             options={
               isDescriptionFetched
-                ? window.sortOptions([...result], word).slice(0, 20)
-                : [...result].slice(0, 20)
+                ? window.sortOptions([...result], word).slice(0, 50)
+                : [...result].slice(0, 50)
             }
             style={{
               width: "100%",
@@ -359,12 +429,35 @@ const Search1 = (props) => {
               setOpen(false);
             }}
             onChange={(event, newValue) => {
+              handleSelectedItemChange(newValue);
               setSelectedItem(newValue);
               setWord(newValue ? newValue.title : "");
               setFirst(newValue);
               setIsValueSelected(true);
               if (props.onSelectedItemChange) {
                 props.onSelectedItemChange(newValue);
+              }
+              if (
+                newValue?.seealso?.includes("Neoplasm") ||
+                newValue?.see?.includes("Neoplasm") ||
+                newValue?.seealso?.includes("Leukemia") ||
+                newValue?.see?.includes("Leukemia") ||
+                newValue?.seealso?.includes("Cancer") ||
+                newValue?.see?.includes("Cancer")
+              ) {
+                setisNeoplasmCodeClicked(true);
+                setisDrugCodeClicked(false);
+              } else if (
+                newValue?.seealso?.includes("Drugs") ||
+                newValue?.see?.includes("Drugs") ||
+                newValue?.seealso?.includes("Poisoning") ||
+                newValue?.see?.includes("Poisoning")
+              ) {
+                setisDrugCodeClicked(true);
+                setisNeoplasmCodeClicked(false);
+              } else {
+                setisNeoplasmCodeClicked(false);
+                setisDrugCodeClicked(false);
               }
             }}
             autoSelect
@@ -397,20 +490,20 @@ const Search1 = (props) => {
                       : ""}{" "}
                     {result1.seealso !== "null" &&
                     result1.seealso !== undefined &&
-                    !result1.seealso.includes("Drugs") &&
-                    !result1.seealso.includes("Neoplasm")
-                      ? `seealso:${result1.seealso}`
-                      : ""}
-                    {result1.seealso !== "null" &&
-                    result1.seealso !== undefined &&
-                    !result1.seealso.includes("Drugs") &&
-                    result1.seealso.includes("Neoplasm") ? (
+                    !(
+                      result1.seealso.includes("Drugs") ||
+                      result1.seealso.includes("Poisoning")
+                    ) &&
+                    !(
+                      result1.seealso.includes("Neoplasm") ||
+                      result1.seealso.includes("Leukemia") ||
+                      result1.seealso.includes("cancer")
+                    ) ? (
                       <span
                         style={{
-                          borderBottom: "1px solid blue",
                           cursor: "pointer",
                         }}
-                        onClick={HandleClick}
+                        onClick={handleclick(result1.seealso)}
                       >
                         seealso:{result1.seealso}
                       </span>
@@ -419,14 +512,38 @@ const Search1 = (props) => {
                     )}
                     {result1.seealso !== "null" &&
                     result1.seealso !== undefined &&
-                    result1.seealso.includes("Drugs") &&
-                    !result1.seealso.includes("Neoplasm") ? (
+                    !(
+                      result1.seealso.includes("Drugs") ||
+                      result1.seealso.includes("Poisoning")
+                    ) &&
+                    (result1.seealso.includes("Neoplasm") ||
+                      result1.seealso.includes("Leukemia") ||
+                      result1.seealso.includes("cancer")) ? (
                       <span
                         style={{
                           borderBottom: "1px solid blue",
                           cursor: "pointer",
                         }}
-                        onClick={HandleClicks}
+                      >
+                        seealso:{result1.seealso}
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                    {result1.seealso !== "null" &&
+                    result1.seealso !== undefined &&
+                    (result1.seealso.includes("Drugs") ||
+                      result1.seealso.includes("Poisoning")) &&
+                    !(
+                      result1.seealso.includes("Neoplasm") ||
+                      result1.seealso.includes("Leukemia") ||
+                      result1.seealso.includes("cancer")
+                    ) ? (
+                      <span
+                        style={{
+                          borderBottom: "1px solid blue",
+                          cursor: "pointer",
+                        }}
                       >
                         seealso:{result1.seealso}
                       </span>
@@ -435,20 +552,31 @@ const Search1 = (props) => {
                     )}{" "}
                     {result1.see !== "null" &&
                     result1.see !== undefined &&
-                    !result1.see.includes("Drugs") &&
-                    !result1.see.includes("Neoplasm")
+                    !(
+                      result1.see.includes("Drugs") ||
+                      result1.see.includes("Poisoning")
+                    ) &&
+                    !(
+                      result1.see.includes("Neoplasm") ||
+                      result1.see.includes("Leukemia") ||
+                      result1.see.includes("cancer")
+                    )
                       ? `see:${result1.see}`
                       : ""}
                     {result1.see !== "null" &&
                     result1.see !== undefined &&
-                    !result1.see.includes("Drugs") &&
-                    result1.see.includes("Neoplasm") ? (
+                    !(
+                      result1.see.includes("Drugs") ||
+                      result1.see.includes("Poisoning")
+                    ) &&
+                    (result1.see.includes("Neoplasm") ||
+                      result1.see.includes("Leukemia") ||
+                      result1.see.includes("cancer")) ? (
                       <span
                         style={{
                           borderBottom: "1px solid blue",
                           cursor: "pointer",
                         }}
-                        onClick={HandleClick}
                       >
                         see:{result1.see}
                       </span>
@@ -457,14 +585,18 @@ const Search1 = (props) => {
                     )}
                     {result1.see !== "null" &&
                     result1.see !== undefined &&
-                    result1.see.includes("Drugs") &&
-                    !result1.see.includes("Neoplasm") ? (
+                    (result1.see.includes("Drugs") ||
+                      result1.see.includes("Poisoning")) &&
+                    !(
+                      result1.see.includes("Neoplasm") ||
+                      result1.see.includes("Leukemia") ||
+                      result1.see.includes("cancer")
+                    ) ? (
                       <span
                         style={{
                           borderBottom: "1px solid blue",
                           cursor: "pointer",
                         }}
-                        onClick={HandleClicks}
                       >
                         see:{result1.see}
                       </span>
@@ -504,15 +636,12 @@ const Search1 = (props) => {
           />
         </Box>
       </Box>
-
-      {/* <Main
-        isValueSelected={isValueSelected}
-        refreshMain={refreshMain}
-        isNeoplasmCodeClicked={isNeoplasmCodeClicked}
-        selectedItem={selectedItem}
-        isDrugCodeClicked={isDrugCodeClicked}
-      /> */}
     </>
   );
+};
+Search1.propTypes = {
+  // ... (other prop types)
+  onNeoplasmCodeClick: PropTypes.func.isRequired,
+  onDrugCodeClick: PropTypes.func.isRequired,
 };
 export default Search1;

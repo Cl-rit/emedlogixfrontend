@@ -5,6 +5,7 @@ import TabularSearch from "./TabularSearch";
 
 import { Box, Stack } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
+import DownArrowButton from "./DownArrowButton";
 
 function Main({
   refreshMain,
@@ -34,6 +35,8 @@ function Main({
         {isSmOrMd ? (
           // Container 1 on top for xs/sm screens
           <>
+            {" "}
+            <DownArrowButton />
             <TabularSearch
               refreshMain={refreshMain}
               selectedCode={selectedCode} // Pass selectedCode to TabularSearch

@@ -1,6 +1,18 @@
 import { Box, useMediaQuery } from "@mui/material";
 import React, { Fragment, useState } from "react";
 import { flexStart } from "../themes/commonStyles";
+import { Loads } from "./Loads";
+
+const removeDuplicates = (arr) => {
+  const seen = new Set();
+  return arr.filter((item) => {
+    const key = `${item.code}_${item.title}`;
+    const duplicate = seen.has(key);
+    seen.add(key);
+    return !duplicate;
+  });
+};
+
 const renderChildRows = (row, depthLevel = 1) => {
   if (row.child) {
     const paddingLeftValue = 20 + depthLevel * 20; // Increase padding for deeper levels
@@ -34,17 +46,26 @@ const renderChildRows = (row, depthLevel = 1) => {
   }
   return null;
 };
-const Sectionnotes1 = ({ onCodeClick }) => {
+const Sectionnotes1 = ({ onCodeClick, filterText }) => {
   const [index1, setIndex1] = useState(null);
   const [fetchedData, setFetchedData] = useState(null);
   const [clickedCode, setClickedCode] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const Code = (global.values?.code || "").replace(/[-.]/g, "");
+
+  const filteredindex1 = index1?.filter((item) => {
+    return (
+      filterText.toLowerCase() === "" ||
+      item.title.toLowerCase().includes(filterText.toLowerCase())
+    );
+  });
+
   React.useEffect(() => {
     console.log("enter index table");
     const fetchBooks = async () => {
       try {
         const response = await fetch(
-          `codes/alldetails/index/title?filterBy=${global.clickedTab}`,
+          `codes/alldetails/index/title?filterBy=${global.clickedTab2}`,
           {
             method: "GET",
             headers: {
@@ -60,14 +81,19 @@ const Sectionnotes1 = ({ onCodeClick }) => {
         }
       } catch (error) {
         console.error("Error:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
+    setIsLoading(true);
     // Clear the previous index data before fetching new data
     fetchBooks();
   }, []);
   console.log("our index1 is", index1);
   console.log(global.searches);
   const search = global.searches;
+  // Filter out duplicate rows based on the "code" and "title"
+  const filteredIndexRows = removeDuplicates(index1 || []);
 
   const handleCodeClick = async (code) => {
     setClickedCode(code);
@@ -110,6 +136,14 @@ const Sectionnotes1 = ({ onCodeClick }) => {
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "100%" : "45vw";
+  const scrollToTop = () => {
+    setTimeout(() => {
+      if (isSmOrMd) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+      }
+    }, 500);
+  };
   return (
     <>
       <Box sx={{ ...flexStart, mt: 2, ml: 1 }}>
@@ -120,13 +154,14 @@ const Sectionnotes1 = ({ onCodeClick }) => {
         >
           <tbody style={{ textAlign: "left" }}>
             {!global.values?.code &&
-              index1
-                ?.filter((item) => {
-                  return search.toLowerCase() === ""
-                    ? item
-                    : item.title.toLowerCase().includes(search);
-                })
-                .map((row) => (
+              // index1
+              //   ?.filter((item) => {
+              //     return search.toLowerCase() === ""
+              //       ? item
+              //       : item.title.toLowerCase().includes(search.toLowerCase());
+              //   })
+              filteredindex1?.map((row) => {
+                return (
                   <Fragment key={row.id}>
                     <tr>
                       <td>
@@ -156,6 +191,7 @@ const Sectionnotes1 = ({ onCodeClick }) => {
                           >
                             SeeAlso {row.seealso}
                           </a>
+                          z
                         </td>
                       )}
                       {row.see !== null && row.see !== "null" && (
@@ -177,7 +213,10 @@ const Sectionnotes1 = ({ onCodeClick }) => {
                               color: "blue",
                               borderBottom: "1px solid blue",
                             }}
-                            onClick={() => handleCodeClick(row.code)}
+                            onClick={() => {
+                              handleCodeClick(row.code);
+                              scrollToTop();
+                            }}
                           >
                             {row.code}
                           </a>
@@ -186,9 +225,11 @@ const Sectionnotes1 = ({ onCodeClick }) => {
                     </tr>
                     {renderChildRows(row)}
                   </Fragment>
-                ))}
-          </tbody>
-        </div>{" "}
+                );
+              })}
+          </tbody>{" "}
+          <Box sx={{ ml: -10 }}>{isLoading && <Loads />}</Box>
+        </div>
       </Box>
     </>
   );

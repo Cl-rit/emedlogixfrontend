@@ -6,9 +6,8 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
-
 import { Loads } from "./Loads";
 import { flexStart } from "../themes/commonStyles";
 
@@ -35,17 +34,30 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     height: 1,
   },
 }));
-export default function Drug2({ onCodeClick }) {
+export default function Drug2({ onCodeClick, filterText }) {
   console.log("neo enter");
   const [drug, setDrug] = useState(null);
   const [drug1, setDrug1] = useState(null);
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [clickedCode, setClickedCode] = useState(null);
   const [result1, setResult1] = useState([]);
   const [fetchedData, setFetchedData] = useState(null);
   const Code = (global.values?.code || "").replace(/[-.]/g, "");
 
+  const filteredDrug = drug?.filter((item) => {
+    return (
+      filterText.toLowerCase() === "" ||
+      item.title.toLowerCase().includes(filterText.toLowerCase())
+    );
+  });
+
+  const filteredDrug1 = drug1?.filter((item) => {
+    return (
+      filterText.toLowerCase() === "" ||
+      item.title.toLowerCase().includes(filterText.toLowerCase())
+    );
+  });
   React.useEffect(() => {
     const fetchAllDetailsDrugData = async () => {
       try {
@@ -74,6 +86,7 @@ export default function Drug2({ onCodeClick }) {
     setDrug1(null);
     fetchAllDetailsDrugData();
   }, []);
+  const search = global.searches;
   function getTitleFromNestedChild(row) {
     if (row.child?.child?.child?.child?.code) {
       return `${row.child.title}-${row.child.child.title}-${row.child.child.child.title}-${row.child.child.child.child.title}`;
@@ -127,6 +140,14 @@ export default function Drug2({ onCodeClick }) {
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "100%" : "48vw";
+  const scrollToTop = () => {
+    setTimeout(() => {
+      if (isSmOrMd) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+      }
+    }, 500);
+  };
   return (
     <>
       <Box sx={{ ...flexStart }}>
@@ -212,109 +233,110 @@ export default function Drug2({ onCodeClick }) {
             </TableHead>
             <TableBody>
               {global.values.code !== null &&
-                drug
-                  ?.filter((item) => {
-                    return (
-                      search.toLowerCase() === "" ||
-                      item.title.toLowerCase().includes(search)
-                    );
-                  })
-                  .map((row) => {
-                    const hasValidParentCode =
-                      row.code && row.code[0] !== "null";
-                    const hasValidChildCode =
-                      row.child &&
-                      row.child.code &&
-                      row.child.code[0] !== "null";
-                    const hasValidChildChildCode =
-                      row.child &&
-                      row.child.child &&
-                      row.child.child.code &&
-                      row.child.child.code[0] !== "null";
-                    const hasValidChildChildChildCode =
-                      row.child &&
-                      row.child.child &&
-                      row.child.child.child &&
-                      row.child.child.child.code &&
-                      row.child.child.child.code[0] !== "null";
-                    const hasValidChildChildChildChildCode =
-                      row.child &&
-                      row.child.child &&
-                      row.child.child.child &&
-                      row.child.child.child.child &&
-                      row.child.child.child.child.code &&
-                      row.child.child.child.child.code[0] !== "null";
+                // drug
+                //   ?.filter((item) => {
+                //     return (
+                //       search.toLowerCase() === "" ||
+                //       item.title.toLowerCase().includes(search)
+                //     );
+                //   })
+                filteredDrug?.map((row) => {
+                  const hasValidParentCode = row.code && row.code[0] !== "null";
+                  const hasValidChildCode =
+                    row.child && row.child.code && row.child.code[0] !== "null";
+                  const hasValidChildChildCode =
+                    row.child &&
+                    row.child.child &&
+                    row.child.child.code &&
+                    row.child.child.code[0] !== "null";
+                  const hasValidChildChildChildCode =
+                    row.child &&
+                    row.child.child &&
+                    row.child.child.child &&
+                    row.child.child.child.code &&
+                    row.child.child.child.code[0] !== "null";
+                  const hasValidChildChildChildChildCode =
+                    row.child &&
+                    row.child.child &&
+                    row.child.child.child &&
+                    row.child.child.child.child &&
+                    row.child.child.child.child.code &&
+                    row.child.child.child.child.code[0] !== "null";
 
-                    if (
-                      !(
-                        hasValidParentCode ||
-                        hasValidChildCode ||
-                        hasValidChildChildCode ||
-                        hasValidChildChildChildCode ||
-                        hasValidChildChildChildChildCode
-                      )
-                    ) {
-                      return null;
-                    }
-
-                    const codeDetails = (
+                  if (
+                    !(
+                      hasValidParentCode ||
+                      hasValidChildCode ||
+                      hasValidChildChildCode ||
+                      hasValidChildChildChildCode ||
                       hasValidChildChildChildChildCode
-                        ? row.child.child.child.child.code
-                        : hasValidChildChildChildCode
-                        ? row.child.child.child.code
-                        : hasValidChildChildCode
-                        ? row.child.child.code
-                        : hasValidChildCode
-                        ? row.child.code
-                        : row.code
-                    ).join(", ");
+                    )
+                  ) {
+                    return null;
+                  }
 
-                    const chunkedCodeDetails = codeDetails
-                      .split(", ")
-                      .reduce((acc, code) => {
-                        if (!acc.length || acc[acc.length - 1].length === 6) {
-                          acc.push([code]);
-                        } else {
-                          acc[acc.length - 1].push(code);
-                        }
-                        return acc;
-                      }, []);
-                    return chunkedCodeDetails.map((chunk, index) => (
-                      <StyledTableRow key={`${row.id}_${index}`}>
-                        <StyledTableCell component="th" scope="row">
-                          {getTitleFromNestedChild(row)}
+                  const codeDetails = (
+                    hasValidChildChildChildChildCode
+                      ? row.child.child.child.child.code
+                      : hasValidChildChildChildCode
+                      ? row.child.child.child.code
+                      : hasValidChildChildCode
+                      ? row.child.child.code
+                      : hasValidChildCode
+                      ? row.child.code
+                      : row.code
+                  ).join(", ");
+
+                  const chunkedCodeDetails = codeDetails
+                    .split(", ")
+                    .reduce((acc, code) => {
+                      if (!acc.length || acc[acc.length - 1].length === 6) {
+                        acc.push([code]);
+                      } else {
+                        acc[acc.length - 1].push(code);
+                      }
+                      return acc;
+                    }, []);
+                  return chunkedCodeDetails.map((chunk, index) => (
+                    <StyledTableRow key={`${row.id}_${index}`}>
+                      <StyledTableCell component="th" scope="row">
+                        {getTitleFromNestedChild(row)}
+                      </StyledTableCell>
+                      {Array.from({ length: 6 }).map((_, colIndex) => (
+                        <StyledTableCell
+                          key={`${row.id}_${index}_${colIndex}`}
+                          sx={{
+                            border: "1px solid grey",
+                          }}
+                          align="center"
+                        >
+                          {chunk[colIndex] !== "--" ? (
+                            <a
+                              style={{ borderBottom: "0.5px solid blue" }}
+                              onClick={() => {
+                                handleCodeClick(chunk[colIndex]);
+                                scrollToTop(); // Call scrollToTop when the link is clicked
+                              }}
+                            >
+                              {chunk[colIndex]}
+                            </a>
+                          ) : (
+                            chunk[colIndex]
+                          )}
                         </StyledTableCell>
-                        {Array.from({ length: 6 }).map((_, colIndex) => (
-                          <StyledTableCell
-                            key={`${row.id}_${index}_${colIndex}`}
-                            sx={{
-                              border: "1px solid grey",
-                            }}
-                            align="center"
-                          >
-                            {chunk[colIndex] !== "--" ? (
-                              <a
-                                style={{ borderBottom: "0.5px solid blue" }}
-                                onClick={() => handleCodeClick(chunk[colIndex])}
-                              >
-                                {chunk[colIndex]}
-                              </a>
-                            ) : (
-                              chunk[colIndex]
-                            )}
-                          </StyledTableCell>
-                        ))}
-                      </StyledTableRow>
-                    ));
-                  })}
+                      ))}
+                    </StyledTableRow>
+                  ));
+                })}
               {global.values.code !== null &&
-                drug1
-                  ?.filter((item) => {
-                    return search.toLowerCase() === ""
-                      ? item
-                      : item.title.toLowerCase().includes(search);
-                  })
-                  .map((row) => (
+                // drug1
+                //   ?.filter((item) => {
+                //     return search.toLowerCase() === ""
+                //       ? item
+                //       : item.title.toLowerCase().includes(search);
+                //   })
+                filteredDrug1?.map((row) => {
+                  return (
                     <StyledTableRow key={row.id}>
                       <StyledTableCell component="th" scope="row">
                         {row.title}
@@ -332,7 +354,10 @@ export default function Drug2({ onCodeClick }) {
                               style={{
                                 borderBottom: "0.5px solid blue",
                               }}
-                              onClick={() => handleCodeClick(value)}
+                              onClick={() => {
+                                handleCodeClick(value);
+                                scrollToTop(); // Call scrollToTop when the link is clicked
+                              }}
                             >
                               {value}
                             </a>
@@ -342,7 +367,8 @@ export default function Drug2({ onCodeClick }) {
                         </StyledTableCell>
                       ))}
                     </StyledTableRow>
-                  ))}
+                  );
+                })}
             </TableBody>
             {isLoading && <Loads />}
           </Table>{" "}
