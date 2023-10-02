@@ -115,7 +115,9 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
     try {
       if (code) {
         const response = await fetch(
-          `/codes/${code}/details/?version=${global.years}`,
+          `/codes/${(code || "").replace(/[-.]/g, "")}/details/?version=${
+            global.years
+          }`,
           {
             method: "GET",
             headers: {
