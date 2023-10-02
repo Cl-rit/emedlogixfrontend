@@ -80,7 +80,8 @@ const Search1 = (props) => {
             word.length > 3
           ) {
             const response = await fetch(
-              `/codes/index/search/name?name=${word}&mainTermSearch=true`,
+              // `/codes/index/search/name?name=${word}&mainTermSearch=true`,
+              `/codes/index/search/combined?name=${word}&mainTermSearch=true`,
               {
                 method: "GET",
                 headers: {

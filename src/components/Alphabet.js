@@ -9,7 +9,8 @@ const StyledTabs = styled((props) => (
     {...props}
     TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
     sx={{
-      height: "0px",
+      height: "30px",
+      minHeight: "30px",
     }}
   />
 ))({
@@ -194,6 +195,7 @@ export const Alphabet = ({ setSelectedCode }) => {
               cursor: "pointer",
               color: "#4185D2",
               fontSize: "15px",
+              mt: "-10px",
             }}
             label={label}
             {...a11yProps(index)}

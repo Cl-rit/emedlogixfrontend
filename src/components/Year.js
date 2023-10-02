@@ -85,7 +85,7 @@ export const Year = () => {
           value={selectedYear}
           onChange={(e) => handleOptionClick(e.target.value)}
           endAdornment={
-            <InputAdornment sx={{ cursor: "pointer" }} position="end" />
+            <InputAdornment sx={{ cursor: "pointer", marginLeft: "-20px" }} />
           }
         >
           {options.map((option) => (

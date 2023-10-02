@@ -1,4 +1,11 @@
-import { Box, Typography, Tab, Tabs, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Tab,
+  Tabs,
+  useMediaQuery,
+  tabsClasses,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Codedet from "./Codedet";
 import PropTypes from "prop-types";
@@ -11,7 +18,7 @@ const StyledTabs = styled((props) => (
   <Tabs
     {...props}
     TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
-    sx={{ height: "0px" }}
+    sx={{ height: "30px", minHeight: "30px" }}
   />
 ))({
   "& .MuiTabs-indicator": {
@@ -125,11 +132,12 @@ const TabularSearch = ({ refreshMain, selectedCode, setSelectedCode }) => {
               }}
             >
               <StyledTabs
-                variant="fullWidth"
                 value={value}
                 onChange={handleChange}
-                aria-label="basic tabs example"
-                className="tabs"
+                variant="scrollable"
+                scrollButtons
+                allowScrollButtonsMobile
+                aria-label="scrollable force tabs example"
               >
                 <Tab
                   disableFocusRipple
@@ -138,6 +146,7 @@ const TabularSearch = ({ refreshMain, selectedCode, setSelectedCode }) => {
                   sx={{
                     cursor: "pointer",
                     height: 3,
+                    mt: "-10px",
                     fontSize: "15px",
                     color: "#4185D2",
                   }}
@@ -151,6 +160,7 @@ const TabularSearch = ({ refreshMain, selectedCode, setSelectedCode }) => {
                   sx={{
                     cursor: "pointer",
                     height: 3,
+                    mt: "-10px",
                     fontSize: "15px",
                     color: "#4185D2",
                   }}
@@ -164,6 +174,7 @@ const TabularSearch = ({ refreshMain, selectedCode, setSelectedCode }) => {
                   sx={{
                     cursor: "pointer",
                     height: 3,
+                    mt: "-10px",
                     fontSize: "15px",
                     color: "#4185D2",
                   }}
@@ -177,6 +188,8 @@ const TabularSearch = ({ refreshMain, selectedCode, setSelectedCode }) => {
                   sx={{
                     cursor: "pointer",
                     height: 3,
+
+                    mt: "-10px",
                     fontSize: "15px",
                     color: "#4185D2",
                   }}
@@ -191,7 +204,6 @@ const TabularSearch = ({ refreshMain, selectedCode, setSelectedCode }) => {
                 marginTop: "20px",
                 overflow: "auto",
                 width: componentWidth,
-
                 height: "45vh",
               }}
             >

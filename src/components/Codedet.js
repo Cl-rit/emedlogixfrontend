@@ -71,9 +71,10 @@ const Codedet = () => {
               sx={{
                 border: "0.5px solid green",
                 textAlign: "center",
-                mt: 2,
+                mt: 1,
                 ml: 2,
-                height: "5vh",
+                mb: 2,
+                height: "4vh",
                 width: "auto",
                 backgroundColor: "#ADD8E6",
               }}
