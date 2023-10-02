@@ -171,7 +171,7 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
                           style={{
                             listStyleType: "square",
                             paddingLeft: "20px",
-                            margin: 0,
+                            margin: 2,
                           }}
                         >
                           {row.nemod !== null && row.nemod !== "null" ? ( // Check if nemod has a value
