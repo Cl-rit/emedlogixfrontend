@@ -126,7 +126,7 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
     return null;
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
-  const componentWidth = isSmOrMd ? "100%" : "45vw";
+  const componentWidth = isSmOrMd ? "100%" : "48vw";
   const scrollToTop = () => {
     setTimeout(() => {
       if (isSmOrMd) {
@@ -162,7 +162,7 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
       )} */}
 
       {global.values && global.values.code && (
-        <Box sx={{ ...flexStart, mt: 2, ml: 1 }}>
+        <Box sx={{ ...flexStart, mt: 5 }}>
           <div
             style={{
               height: "65vh",
@@ -189,7 +189,7 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
                               style={{
                                 listStyleType: "square",
                                 paddingLeft: "20px",
-                                margin: 0,
+                                margin: 2,
                               }}
                             >
                               {row.nemod ? (
