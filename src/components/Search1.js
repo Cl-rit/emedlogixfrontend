@@ -267,17 +267,21 @@ const Search1 = (props) => {
     // Check if the selectedItem has 'Neoplasm' in its description or 'seealso'
     if (
       newSelectedItem &&
-      (newSelectedItem.description?.includes("Neoplasm") ||
+      (newSelectedItem.seealso?.includes("Leukemia") ||
+        newSelectedItem.see?.includes("Leukemia") ||
         newSelectedItem.seealso?.includes("Neoplasm") ||
-        newSelectedItem.see?.includes("Neoplasm"))
+        newSelectedItem.see?.includes("Neoplasm") ||
+        newSelectedItem.seealso?.includes("Cancer") ||
+        newSelectedItem.see?.includes("Cancer"))
     ) {
       props.onNeoplasmCodeClick(true);
       props.onDrugCodeClick(false); // Activate the Neoplasm button
     } else if (
       newSelectedItem &&
-      (newSelectedItem.description?.includes("Drug") ||
-        newSelectedItem.seealso?.includes("Drug") ||
-        newSelectedItem.see?.includes("Drug"))
+      (newSelectedItem.seealso?.includes("Poisoning") ||
+        newSelectedItem.see?.includes("Poisoning") ||
+        newSelectedItem.seealso?.includes("Drugs") ||
+        newSelectedItem.see?.includes("Drugs"))
     ) {
       props.onDrugCodeClick(true); // Activate the Neoplasm button
       props.onNeoplasmCodeClick(false);
@@ -438,28 +442,28 @@ const Search1 = (props) => {
               if (props.onSelectedItemChange) {
                 props.onSelectedItemChange(newValue);
               }
-              if (
-                newValue?.seealso?.includes("Neoplasm") ||
-                newValue?.see?.includes("Neoplasm") ||
-                newValue?.seealso?.includes("Leukemia") ||
-                newValue?.see?.includes("Leukemia") ||
-                newValue?.seealso?.includes("Cancer") ||
-                newValue?.see?.includes("Cancer")
-              ) {
-                setisNeoplasmCodeClicked(true);
-                setisDrugCodeClicked(false);
-              } else if (
-                newValue?.seealso?.includes("Drugs") ||
-                newValue?.see?.includes("Drugs") ||
-                newValue?.seealso?.includes("Poisoning") ||
-                newValue?.see?.includes("Poisoning")
-              ) {
-                setisDrugCodeClicked(true);
-                setisNeoplasmCodeClicked(false);
-              } else {
-                setisNeoplasmCodeClicked(false);
-                setisDrugCodeClicked(false);
-              }
+              // if (
+              //   newValue?.seealso?.includes("Neoplasm") ||
+              //   newValue?.see?.includes("Neoplasm") ||
+              //   newValue?.seealso?.includes("Leukemia") ||
+              //   newValue?.see?.includes("Leukemia") ||
+              //   newValue?.seealso?.includes("Cancer") ||
+              //   newValue?.see?.includes("Cancer")
+              // ) {
+              //   setisNeoplasmCodeClicked(true);
+              //   setisDrugCodeClicked(false);
+              // } else if (
+              //   newValue?.seealso?.includes("Drugs") ||
+              //   newValue?.see?.includes("Drugs") ||
+              //   newValue?.seealso?.includes("Poisoning") ||
+              //   newValue?.see?.includes("Poisoning")
+              // ) {
+              //   setisDrugCodeClicked(true);
+              //   setisNeoplasmCodeClicked(false);
+              // } else {
+              //   setisNeoplasmCodeClicked(false);
+              //   setisDrugCodeClicked(false);
+              // }
             }}
             autoSelect
             renderInput={(params) => (
