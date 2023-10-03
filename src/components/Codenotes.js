@@ -133,6 +133,30 @@ const Codenotes = () => {
             </table>
           </Box>
         ) : null}
+        {results?.section?.sevenChrDef ? (
+          <table style={{ ...Table }} border="1">
+            <thead>
+              <tr>
+                <th style={{ ...Table }} rowSpan="2">
+                  <h4>7th Char</h4>
+                </th>
+                <th style={{ ...Table }} rowSpan="2">
+                  <h4>Description</h4>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.section.sevenChrDef.extensionList.map((charac) => {
+                return (
+                  <tr key={charac.charValue}>
+                    <td style={{ ...Table }}>{charac.charValue}</td>
+                    <td style={{ ...Table }}>{charac.extensionValue}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : null}
       </Box>
     </>
   );
