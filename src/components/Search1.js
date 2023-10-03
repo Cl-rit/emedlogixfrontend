@@ -401,8 +401,8 @@ const Search1 = (props) => {
             }
             options={
               isDescriptionFetched
-                ? window.sortOptions([...result], word).slice(0, 50)
-                : [...result].slice(0, 50)
+                ? window.sortOptions([...result], word).slice(0, 15)
+                : [...result].slice(0, 15)
             }
             style={{
               width: "100%",
