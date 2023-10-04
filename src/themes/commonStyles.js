@@ -23,6 +23,11 @@ export const flexBetweenAlign1 = {
   justifyContent: "space-evenly",
   alignItems: "center",
 };
+export const flexBetweenAlign2 = {
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+};
 
 export const flexBetweenCenter = {
   display: "flex",

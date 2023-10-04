@@ -420,12 +420,7 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
               </TableBody>{" "}
             </Table>{" "}
             {global.values?.code !== null && neo && neo.length === 0 && (
-              <Typography
-                marginLeft="10vw"
-                color="#418502"
-                fontWeight="800"
-                mt="5vh"
-              >
+              <Typography ml="2%" color="#053559" fontWeight="800" mt="5vh">
                 No Neoplasm codes found for the given search criteria.
               </Typography>
             )}

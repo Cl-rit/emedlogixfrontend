@@ -2,7 +2,7 @@ import { Close } from "@mui/icons-material";
 import { Box, Button, useMediaQuery } from "@mui/material";
 
 import React, { useEffect, useState } from "react";
-import { flexCenter } from "../themes/commonStyles";
+import { flexBetweenAlign2 } from "../themes/commonStyles";
 
 const Codedet = () => {
   console.log("enter codedet page");
@@ -60,6 +60,7 @@ const Codedet = () => {
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "auto" : "170px";
   const componentHeight = isSmOrMd ? "auto" : "2vh";
+
   return (
     <Box>
       {result && (
@@ -92,16 +93,22 @@ const Codedet = () => {
           </div>
           <table
             style={{
-              ...flexCenter,
               width: "95%",
               marginLeft: "5%",
             }}
           >
             <tbody>
               {result && (
-                <tr key={result.code} style={{ textAlign: "center" }}>
+                <tr
+                  key={result.code}
+                  style={{
+                    ...flexBetweenAlign2,
+                  }}
+                >
                   <td>{result.code}</td>
-                  <td>{result.longDescription}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {result.longDescription}
+                  </td>
                   <td>
                     {result.billable === true ? (
                       <Button

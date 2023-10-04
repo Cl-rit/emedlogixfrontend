@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Table } from "../themes/commonStyles";
+import { Table, flexBetweenAlign1 } from "../themes/commonStyles";
 
 const Codenotes = () => {
   const [results, setResults] = useState(null);
@@ -17,7 +17,7 @@ const Codenotes = () => {
             {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+                Authorization: `Bearer ${global.tokens} `,
               },
             }
           );
@@ -134,23 +134,58 @@ const Codenotes = () => {
           </Box>
         ) : null}
         {results?.section?.sevenChrDef ? (
-          <table style={{ ...Table }} border="1">
+          <table style={{ ...Table, width: "95%", marginLeft: "5%" }}>
             <thead>
-              <tr>
-                <th style={{ ...Table }} rowSpan="2">
+              <tr
+                style={{
+                  ...Table,
+                }}
+              >
+                <th
+                  style={{
+                    ...Table,
+                  }}
+                  rowSpan="2"
+                >
                   <h4>7th Char</h4>
                 </th>
-                <th style={{ ...Table }} rowSpan="2">
+                <th
+                  style={{
+                    ...Table,
+                  }}
+                  rowSpan="2"
+                >
                   <h4>Description</h4>
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody
+              style={{
+                ...Table,
+              }}
+            >
               {results.section.sevenChrDef.extensionList.map((charac) => {
                 return (
-                  <tr key={charac.charValue}>
-                    <td style={{ ...Table }}>{charac.charValue}</td>
-                    <td style={{ ...Table }}>{charac.extensionValue}</td>
+                  <tr
+                    style={{
+                      ...Table,
+                    }}
+                    key={charac.charValue}
+                  >
+                    <td
+                      style={{
+                        ...Table,
+                      }}
+                    >
+                      {charac.charValue}
+                    </td>
+                    <td
+                      style={{
+                        ...Table,
+                      }}
+                    >
+                      {charac.extensionValue}
+                    </td>
                   </tr>
                 );
               })}

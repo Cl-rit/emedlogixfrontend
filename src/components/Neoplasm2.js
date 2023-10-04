@@ -382,22 +382,12 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
           </Table>{" "}
           {isLoading && <Loads />}
           {global.values?.code !== null && neo && neo.length === 0 && (
-            <Typography
-              marginLeft="10vw"
-              color="#418502"
-              fontWeight="800"
-              mt="5vh"
-            >
+            <Typography ml="2%" color="#053559" fontWeight="800" mt="5vh">
               <h3>No Neoplasm codes found for the given search criteria.</h3>
             </Typography>
           )}{" "}
           {!global.values?.code && neo1 && neo1.length === 0 && (
-            <Typography
-              marginLeft="10vw"
-              color="#418502"
-              fontWeight="800"
-              mt="5vh"
-            >
+            <Typography ml="2%" color="#053559" fontWeight="800" mt="5vh">
               No Neoplasm codes available in the data.
             </Typography>
           )}

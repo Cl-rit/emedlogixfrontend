@@ -432,25 +432,15 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
                       </StyledTableRow>
                     ))}
               </TableBody>
-              {isLoading && <Loads />}
+              {/* {isLoading && <Loads />} */}
             </Table>
             {global.values?.code !== null && drug && drug.length === 0 && (
-              <Typography
-                marginLeft="10vw"
-                color="#418502"
-                fontWeight="800"
-                mt="5vh"
-              >
+              <Typography ml="2%" color="#053559" fontWeight="800" mt="5vh">
                 No Drug codes found for the given search criteria.
               </Typography>
             )}
             {!global.values?.code && drug && drug1.length === 0 && (
-              <Typography
-                marginLeft="10vw"
-                color="#418502"
-                fontWeight="800"
-                mt="5vh"
-              >
+              <Typography ml="2%" color="#053559" fontWeight="800" mt="5vh">
                 No Drug codes available in the data.
               </Typography>
             )}

@@ -252,7 +252,7 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
               </tbody>
 
               {global.values?.code !== null && index && index.length === 0 && (
-                <Typography ml="10%" color="#418502" fontWeight="800" mt="5vh">
+                <Typography color="#053559" fontWeight="800" mt="9vh">
                   No Index codes found for the given search criteria.
                 </Typography>
               )}
