@@ -1,40 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
-
-import { flexBetweenAlign, flexBetweenAlign1 } from "../themes/commonStyles";
+import { flexBetweenAlign } from "../themes/commonStyles";
 
 export const Header = () => {
-  const [first, setfirst] = useState(null);
-
-  React.useEffect(() => {
-    const fetchCodeDetails = async () => {
-      try {
-        let result1 = await fetch(`/codes/${global.usermail}/userdetail`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${global.tokens}`,
-          },
-        });
-
-        if (result1.status === 200) {
-          result1 = await result1.json();
-          setfirst(result1.username);
-          localStorage.setItem("name", result1.username); // Set the value in localStorage
-        } else {
-          console.error(`Error: ${result1.status}`);
-        }
-      } catch (error) {
-        console.error("An error occurred:", error);
-      }
-    };
-
-    fetchCodeDetails();
-  }, [global.usermail]);
-
-  console.log(global.usermail);
-  console.log(first);
-  localStorage.setItem("name", first);
-
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>

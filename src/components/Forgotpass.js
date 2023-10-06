@@ -3,7 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment"; // Import InputAdornment
+import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import Visibility from "@mui/icons-material/Visibility"; // Import visibility icon
+import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function ForgetPassword() {
@@ -33,7 +33,7 @@ function ForgetPassword() {
     setErrorMessage("");
   };
   global.emails = email;
-  console.log(global.emails);
+  // console.log(global.emails);
 
   async function handleRemindPasswordClick(e) {
     e.preventDefault();
@@ -54,7 +54,7 @@ function ForgetPassword() {
       },
     });
 
-    console.log(result);
+    // console.log(result);
     let result1 = await fetch(`get-otp?email=${global.emails}`, {
       method: "GET",
       headers: {
@@ -66,7 +66,7 @@ function ForgetPassword() {
     result1 = await result1.json();
 
     global.otps = result1;
-    console.log(global.otps);
+    // console.log(global.otps);
     setPasswordReminded(true);
   }
   const validateEmail = (email) => {
@@ -74,14 +74,13 @@ function ForgetPassword() {
     return emailRegex.test(email);
   };
   async function handleVerifyOTPClick(e) {
-    console.log(otp);
+    // console.log(otp);
 
     if (!otp) {
       setOtpError("Please fill in the Enter OTP field.");
       return;
     }
 
-    // Convert global.otps to a string if it's not already
     const otpsAsString = String(global.otps);
 
     let result = await fetch(`verify-otp?otp=${otp}`, {
@@ -93,30 +92,28 @@ function ForgetPassword() {
       },
     });
 
-    console.log(result);
+    // console.log(result);
 
-    // Convert otp to a string and trim it
     const trimmedOTP = String(otp).trim();
     const trimmedGlobalOTPS = otpsAsString.trim();
 
     if (trimmedOTP === trimmedGlobalOTPS) {
-      setOtp(""); // Clear the OTP field
-      setShowChangePassword(true); // Show the password change input fields
+      setOtp("");
+      setShowChangePassword(true);
       setOtpError("");
     } else {
-      // Handle the case where the OTP is incorrect
       setOtpError("Incorrect OTP");
-      console.log("Incorrect OTP");
+      // console.log("Incorrect OTP");
     }
   }
-  // Password validation function
+
   const validatePassword = (password) => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return passwordRegex.test(password);
   };
   async function handleChangePasswordClick(e) {
-    console.log(newPassword);
+    // console.log(newPassword);
     if (!newPassword) {
       setNewPasswordError("Please fill in the new password.");
       return;
@@ -139,7 +136,7 @@ function ForgetPassword() {
         },
       }
     );
-    console.log(result);
+    // console.log(result);
     setPasswordChanged(true);
   }
   const handleGoToHomePage = () => {
@@ -253,11 +250,7 @@ function ForgetPassword() {
                             onClick={() => setShowPassword(!showPassword)}
                             edge="end"
                           >
-                            {showPassword ? (
-                              <Visibility /> // Show the eye icon when password is hidden
-                            ) : (
-                              <VisibilityOff /> // Show the crossed eye icon when password is visible
-                            )}
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
                           </IconButton>
                         )}
                       </InputAdornment>

@@ -14,7 +14,7 @@ const removeDuplicates = (arr) => {
 };
 const renderChildRows = (row, depthLevel = 1) => {
   if (row.child && row.child.code !== null) {
-    const paddingLeftValue = 20 + depthLevel * 20; // Increase padding for deeper levels
+    const paddingLeftValue = 20 + depthLevel * 20;
     return (
       <>
         <tr key={row.child.id}>
@@ -56,27 +56,27 @@ const Codenotes1 = ({ onCodeClick, filterText }) => {
   const Code = (global.values?.code || "").replace(/[-.]/g, "");
 
   React.useEffect(() => {
-    console.log("enter index table");
+    // console.log("enter index table");
     const fetchBooks = async () => {
       try {
         if (global.values && global.values.code !== null) {
           const response = await fetch(`/codes/${Code}/index`, {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+              Authorization: `Bearer ${global.tokens} `,
             },
           });
           if (response.ok) {
             const data = await response.json();
             setIndex(data);
           } else {
-            console.error("Failed to fetch data");
+            // console.error("Failed to fetch data");
           }
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       }
     };
     setIndex(null);
@@ -86,15 +86,15 @@ const Codenotes1 = ({ onCodeClick, filterText }) => {
   }, [global.values?.code]);
 
   React.useEffect(() => {
-    console.log("enter index table");
+    // console.log("enter index table");
     const fetchBooks = async () => {
       try {
         const response = await fetch(
-          `codes/alldetails/index/title?filterBy=a`,
+          `codes/alldetails/index/title?filterBy=a&version=${global.years}`,
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+              Authorization: `Bearer ${global.tokens} `,
             },
           }
         );
@@ -102,22 +102,22 @@ const Codenotes1 = ({ onCodeClick, filterText }) => {
           const data = await response.json();
           setIndex1(data);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       } finally {
         setIsLoading(false);
       }
     };
     setIsLoading(true);
-    // Clear the previous index data before fetching new data
+
     setIndex1(null);
     fetchBooks();
   }, []);
-  console.log("our index1 is", index1);
-  console.log(global.searches);
-  //const search = global.searches;
+  // console.log("our index1 is", index1);
+  // console.log(global.searches);
+
   const fetchCodeDetails = async (code) => {
     try {
       if (code) {
@@ -128,22 +128,22 @@ const Codenotes1 = ({ onCodeClick, filterText }) => {
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+              Authorization: `Bearer ${global.tokens} `,
             },
           }
         );
         if (response.ok) {
           const data = await response.json();
-          setFetchedData(data); // Store the fetched data in the state
+          setFetchedData(data);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
-  // Filter out duplicate rows based on the "code" and "title"
+
   const filteredIndexRows = removeDuplicates(index1 || []);
   const filteredIndex1 = index1?.filter((item) => {
     return (
@@ -153,9 +153,8 @@ const Codenotes1 = ({ onCodeClick, filterText }) => {
   });
   const handleCodeClick = async (code) => {
     setClickedCode(code);
-    setFetchedData(null); // Reset fetchedData to null
-
-    fetchCodeDetails(code); // Call the function to fetch code details
+    setFetchedData(null);
+    fetchCodeDetails(code);
     global.intable = null;
     await fetchCodeDetails(code);
     onCodeClick(code);
@@ -163,7 +162,6 @@ const Codenotes1 = ({ onCodeClick, filterText }) => {
     global.intable = null;
     global.selectedCode = code;
     global.isCodeClicked = true;
-    // global.values = null;
   };
   React.useEffect(() => {
     if (fetchedData) {
@@ -189,86 +187,79 @@ const Codenotes1 = ({ onCodeClick, filterText }) => {
             width: componentWidth,
           }}
         >
-          <tbody style={{ textAlign: "left" }}>
-            {!global.values?.code &&
-              // index1
-              //   ?.filter((item) => {
-              //     const titleLowerCase = item.title.toLowerCase();
-              //     const searchLowerCase = search.toLowerCase();
-              //     return (
-              //       searchLowerCase === "" ||
-              //       titleLowerCase.includes(searchLowerCase)
-              //     );
-              //   })
-              filteredIndex1?.map((row) => {
-                return (
-                  <Fragment key={row.id}>
-                    {row.ismainterm && ( // Check if ismainterm is true
-                      <tr>
-                        <td>
-                          <ul
-                            style={{
-                              listStyleType: "square",
-                              paddingLeft: "20px",
-                              margin: 2,
-                            }}
-                          >
-                            {row.nemod !== null && row.nemod !== "null" ? (
-                              <li>
-                                {row.title} {row.nemod}
-                              </li>
-                            ) : (
-                              <li>{row.title}</li>
-                            )}
-                          </ul>
-                        </td>
-                        {row.seealso !== null && row.seealso !== "null" && (
+          <table>
+            <tbody style={{ textAlign: "left" }}>
+              {!global.values?.code &&
+                filteredIndex1?.map((row) => {
+                  return (
+                    <Fragment key={row.id}>
+                      {row.ismainterm && (
+                        <tr>
                           <td>
-                            <a
+                            <ul
                               style={{
-                                color: "blue",
-                                borderBottom: "1px solid blue",
+                                listStyleType: "square",
+                                paddingLeft: "20px",
+                                margin: 2,
                               }}
                             >
-                              SeeAlso {row.seealso}
-                            </a>
+                              {row.nemod !== null && row.nemod !== "null" ? (
+                                <li>
+                                  {row.title} {row.nemod}
+                                </li>
+                              ) : (
+                                <li>{row.title}</li>
+                              )}
+                            </ul>
                           </td>
-                        )}
-                        {row.see !== null && row.see !== "null" && (
-                          <td>
-                            <a
-                              style={{
-                                color: "blue",
-                                borderBottom: "1px solid blue",
-                              }}
-                            >
-                              See {row.see}
-                            </a>
-                          </td>
-                        )}
-                        {row.code && (
-                          <td style={{ marginRight: "10px" }}>
-                            <a
-                              style={{
-                                color: "blue",
-                                borderBottom: "1px solid blue",
-                              }}
-                              onClick={() => {
-                                handleCodeClick(row.code);
-                                scrollToTop();
-                              }}
-                            >
-                              {row.code}
-                            </a>
-                          </td>
-                        )}
-                      </tr>
-                    )}
-                    {row.ismainterm && renderChildRows(row)}
-                  </Fragment>
-                );
-              })}
-          </tbody>
+                          {row.seealso !== null && row.seealso !== "null" && (
+                            <td>
+                              <a
+                                style={{
+                                  color: "blue",
+                                  borderBottom: "1px solid blue",
+                                }}
+                              >
+                                SeeAlso {row.seealso}
+                              </a>
+                            </td>
+                          )}
+                          {row.see !== null && row.see !== "null" && (
+                            <td>
+                              <a
+                                style={{
+                                  color: "blue",
+                                  borderBottom: "1px solid blue",
+                                }}
+                              >
+                                See {row.see}
+                              </a>
+                            </td>
+                          )}
+                          {row.code && (
+                            <td style={{ marginRight: "10px" }}>
+                              <a
+                                style={{
+                                  color: "blue",
+                                  borderBottom: "1px solid blue",
+                                }}
+                                onClick={() => {
+                                  handleCodeClick(row.code);
+                                  scrollToTop();
+                                }}
+                              >
+                                {row.code}
+                              </a>
+                            </td>
+                          )}
+                        </tr>
+                      )}
+                      {row.ismainterm && renderChildRows(row)}
+                    </Fragment>
+                  );
+                })}
+            </tbody>
+          </table>
           <Box sx={{ ml: -10 }}>{isLoading && <Loads />}</Box>
         </div>
       </Box>

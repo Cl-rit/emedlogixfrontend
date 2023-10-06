@@ -11,9 +11,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import InputAdornment from "@mui/material/InputAdornment"; // Import InputAdornment
+import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-import Visibility from "@mui/icons-material/Visibility"; // Import visibility icon
+import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function Copyright(props) {
@@ -47,7 +47,7 @@ function SignIn() {
 
     if (email.length === 0 || password.length === 0) {
       setErrorMessage("Please fill in all fields.");
-      return; // Exit early if fields are empty.
+      return;
     }
 
     const item = {
@@ -60,27 +60,23 @@ function SignIn() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // You might not need these CORS headers if your frontend and backend are on the same domain.
-          // 'Access-Control-Allow-Origin': '*',
-          // 'Access-Control-Allow-Credentials': 'true'
         },
         body: JSON.stringify(item),
       });
 
       if (response.ok) {
         const result = await response.json();
-        console.log("signin page", result.token);
+        // console.log("signin page", result.token);
         localStorage.setItem("emed", result.token);
         localStorage.setItem("email", email);
         if (result.token != null) {
           navigate("/get");
-          // localStorage.removeItem("emed")
         }
       } else {
         setErrorMessage("Incorrect Email Address and password.");
       }
     } catch (error) {
-      console.error("Error during authentication:", error);
+      // console.error("Error during authentication:", error);
       setErrorMessage("An error occurred during authentication.");
     }
   }
@@ -136,13 +132,9 @@ function SignIn() {
                   <InputAdornment position="end">
                     {password.length > 0 && (
                       <IconButton
-                        onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+                        onClick={() => setShowPassword(!showPassword)}
                       >
-                        {showPassword ? (
-                          <Visibility /> // Show the eye icon when password is hidden
-                        ) : (
-                          <VisibilityOff /> // Show the crossed eye icon when password is visible
-                        )}
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     )}
                   </InputAdornment>

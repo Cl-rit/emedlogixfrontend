@@ -6,10 +6,9 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-// import "../App.css";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
 
 const Search1 = (props) => {
   const [result, setResult] = useState([]);
@@ -43,16 +42,12 @@ const Search1 = (props) => {
     setWord("");
     setSelectedItem(null);
     setIsValueSelected(false);
-
     setIsValueSelected(null);
   };
   console.log(word);
 
   useEffect(() => {
-    //const getdataAftertimeout = setTimeout(() => {
-
     global.inatbleresult = null;
-
     const fetchBooks = async () => {
       try {
         if (word) {
@@ -61,12 +56,15 @@ const Search1 = (props) => {
           const combinedData = [];
 
           if (regex.test(word)) {
-            const response = await fetch(`/codes/${word}/matches`, {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${global.tokens} `,
-              },
-            });
+            const response = await fetch(
+              `/codes/${word}/matches?version=${global.years}`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${global.tokens} `,
+                },
+              }
+            );
             setIsDescriptionFetched(false);
 
             if (response.ok) {
@@ -80,8 +78,8 @@ const Search1 = (props) => {
             word.length > 3
           ) {
             const response = await fetch(
-              `/codes/index/search/name?name=${word}&mainTermSearch=true`,
-              // `/codes/index/search/combined?name=${word}&mainTermSearch=true`,
+              // `/codes/index/search/name?name=${word}&mainTermSearch=true&version=${global.years}`,
+              `/codes/index/search/combined?name=${word}&mainTermSearch=true&version=${global.years}`,
               {
                 method: "GET",
                 headers: {
@@ -90,7 +88,6 @@ const Search1 = (props) => {
               }
             );
             setIsDescriptionFetched(true);
-
             if (response.ok) {
               const data = await response.json();
               combinedData.push(...data);
@@ -99,7 +96,7 @@ const Search1 = (props) => {
             }
 
             const alterResponse = await fetch(
-              `/codes/alter-terms/search?alterDescription=${word}`,
+              `/codes/alter-terms/search?alterDescription=${word}&version=${global.years}`,
               {
                 method: "GET",
                 headers: {
@@ -111,17 +108,19 @@ const Search1 = (props) => {
             if (alterResponse.ok) {
               const alterData = await alterResponse.json();
               combinedData.push(...alterData);
-
               console.log("Second API response:", alterData);
             } else {
               console.error("Failed to fetch data from the second API");
             }
-            const thirdResponse = await fetch(`/codes/${word}/description`, {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${global.tokens} `,
-              },
-            });
+            const thirdResponse = await fetch(
+              `/codes/${word}/description?version=${global.years}`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${global.tokens} `,
+                },
+              }
+            );
             setIsDescriptionFetched(true);
             if (thirdResponse.ok) {
               const alterrData = await thirdResponse.json();
@@ -133,7 +132,6 @@ const Search1 = (props) => {
           } else {
             console.error("Invalid input");
           }
-
           setResult(combinedData);
         } else {
           setResult([]);
@@ -142,79 +140,18 @@ const Search1 = (props) => {
         console.error("Error:", error);
       }
     };
-
     fetchBooks();
-    //  }, 600);
-    //  return () => clearTimeout(getdataAftertimeout);
   }, [word]);
   console.log(result);
-
   console.log("our result is", result);
   console.log(first);
   global.values = first;
   global.words = word;
 
-  //if (setIsDescriptionFetched) {
-  // window.sortOptions = (options, typedValueLower) => {
-  //   return options.sort((a, b) => {
-  //     const aTitle = (a.title || a.description || a.alterDescription || a.see || a.seealso)?? "";
-  //     const bTitle = (b.title || b.description || b.alterDescription || a.see || a.seealso )?? "";
-  //     const aLower = aTitle.toLowerCase();
-  //     const bLower = bTitle.toLowerCase();
-  //     if (aLower.startsWith(typedValueLower)) return -1;
-  //     if (bLower.startsWith(typedValueLower)) return 1;
-  //     return aLower.localeCompare(bLower);
-  //   });
-  // };
-
-  // if (setIsDescriptionFetched) {
-  //   window.sortOptions = (options, typedValue) => {
-  //     const typedValueLower = typedValue.toLowerCase();
-  //     const sanitizedTypedValue = typedValueLower.replace(/['s-]/g, "");
-
-  //     return options.sort((a, b) => {
-  //       // Check if either 'a' or 'b' has a type property equal to "ismainterm"
-  //       if (a.type === "ismainterm") {
-  //         return -1; // 'a' comes before 'b'
-  //       } else if (b.type === "ismainterm") {
-  //         return 1; // 'b' comes before 'a'
-  //       }
-
-  //       const aContent = `${a.title || ""} ${a.description || ""} ${
-  //         a.alterDescription || ""
-  //       }`;
-  //       const bContent = `${b.title || ""} ${b.description || ""} ${
-  //         b.alterDescription || ""
-  //       }`;
-  //       const aLower = aContent.toLowerCase();
-  //       const bLower = bContent.toLowerCase();
-
-  //       // Preprocess the content of a and b to ignore 's and hyphens
-  //       const aContentSanitized = aLower.replace(/['s-]/g, "");
-  //       const bContentSanitized = bLower.replace(/['s-]/g, "");
-
-  //       // Calculate how well a and b match the typed value
-  //       const matchScoreA = aContentSanitized.includes(sanitizedTypedValue)
-  //         ? 1
-  //         : 0;
-  //       const matchScoreB = bContentSanitized.includes(sanitizedTypedValue)
-  //         ? 1
-  //         : 0;
-
-  //       // Sort in descending order of match score
-  //       if (matchScoreA > matchScoreB) return -1;
-  //       if (matchScoreA < matchScoreB) return 1;
-
-  //       // If match scores are equal, sort alphabetically
-  //       return aLower.localeCompare(bLower);
-  //     });
-  //   };
-  // }
   if (setIsDescriptionFetched) {
     window.sortOptions = (options, typedValue) => {
       const typedValueLower = typedValue ? typedValue.toLowerCase() : "";
       const sanitizedTypedValue = typedValueLower.replace(/['s-]/g, "");
-
       return options.sort((a, b) => {
         const aTitle =
           (a.title ||
@@ -234,26 +171,20 @@ const Search1 = (props) => {
         const bLower = bTitle.toLowerCase();
         const aContentSanitized = aLower.replace(/['s-]/g, "");
         const bContentSanitized = bLower.replace(/['s-]/g, "");
-
-        // Check if any part of the user-typed value matches with "ismainTerm" options
         const matchesA =
           a.type === "ismainterm" &&
           aContentSanitized.includes(sanitizedTypedValue);
         const matchesB =
           b.type === "ismainterm" &&
           bContentSanitized.includes(sanitizedTypedValue);
-
         if (matchesA && !matchesB) return -1;
         if (matchesB && !matchesA) return 1;
-
         if (aContentSanitized === sanitizedTypedValue) return -1;
         if (bContentSanitized === sanitizedTypedValue) return 1;
-
         return aContentSanitized.localeCompare(bContentSanitized);
       });
     };
   }
-  /* differ from kps*/
   const HandleClick = () => {
     setisNeoplasmCodeClicked(true);
   };
@@ -263,8 +194,6 @@ const Search1 = (props) => {
   const handleSelectedItemChange = (newSelectedItem) => {
     setSelectedItem(newSelectedItem);
     setIsValueSelected(true);
-
-    // Check if the selectedItem has 'Neoplasm' in its description or 'seealso'
     if (
       newSelectedItem &&
       (newSelectedItem.seealso?.includes("Leukemia") ||
@@ -275,7 +204,7 @@ const Search1 = (props) => {
         newSelectedItem.see?.includes("Cancer"))
     ) {
       props.onNeoplasmCodeClick(true);
-      props.onDrugCodeClick(false); // Activate the Neoplasm button
+      props.onDrugCodeClick(false);
     } else if (
       newSelectedItem &&
       (newSelectedItem.seealso?.includes("Poisoning") ||
@@ -283,7 +212,7 @@ const Search1 = (props) => {
         newSelectedItem.seealso?.includes("Drugs") ||
         newSelectedItem.see?.includes("Drugs"))
     ) {
-      props.onDrugCodeClick(true); // Activate the Neoplasm button
+      props.onDrugCodeClick(true);
       props.onNeoplasmCodeClick(false);
     } else {
       props.onNeoplasmCodeClick(false);
@@ -307,7 +236,6 @@ const Search1 = (props) => {
           sx={{
             margin: "auto",
             color: "black",
-
             mt: "20px",
             width: "100%",
           }}
@@ -375,7 +303,7 @@ const Search1 = (props) => {
             }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position="end">
                   {word || selectedItem ? (
                     <CloseIcon
                       sx={{
@@ -442,28 +370,6 @@ const Search1 = (props) => {
               if (props.onSelectedItemChange) {
                 props.onSelectedItemChange(newValue);
               }
-              // if (
-              //   newValue?.seealso?.includes("Neoplasm") ||
-              //   newValue?.see?.includes("Neoplasm") ||
-              //   newValue?.seealso?.includes("Leukemia") ||
-              //   newValue?.see?.includes("Leukemia") ||
-              //   newValue?.seealso?.includes("Cancer") ||
-              //   newValue?.see?.includes("Cancer")
-              // ) {
-              //   setisNeoplasmCodeClicked(true);
-              //   setisDrugCodeClicked(false);
-              // } else if (
-              //   newValue?.seealso?.includes("Drugs") ||
-              //   newValue?.see?.includes("Drugs") ||
-              //   newValue?.seealso?.includes("Poisoning") ||
-              //   newValue?.see?.includes("Poisoning")
-              // ) {
-              //   setisDrugCodeClicked(true);
-              //   setisNeoplasmCodeClicked(false);
-              // } else {
-              //   setisNeoplasmCodeClicked(false);
-              //   setisDrugCodeClicked(false);
-              // }
             }}
             autoSelect
             renderInput={(params) => (
@@ -645,7 +551,6 @@ const Search1 = (props) => {
   );
 };
 Search1.propTypes = {
-  // ... (other prop types)
   onNeoplasmCodeClick: PropTypes.func.isRequired,
   onDrugCodeClick: PropTypes.func.isRequired,
 };

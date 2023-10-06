@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import {
   Select,
   MenuItem,
@@ -14,7 +13,6 @@ const StyledSelect = styled(Select)(({ theme }) => ({
   backgroundColor: "#E9F8FF",
   color: "#053559",
   borderRadius: 0,
-
   height: "30px",
   cursor: "pointer",
   "& .MuiSelect-selectMenu": {
@@ -37,12 +35,11 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     transition: "1s",
   },
 }));
-
 export const Year = () => {
   const theme = useTheme();
   const date = new Date();
   const currentYear = date.getFullYear();
-  const currentMonth = date.getMonth() + 1; // Month is zero-based
+  const currentMonth = date.getMonth() + 1;
   let displayYear;
   if (currentMonth >= 10) {
     displayYear = currentYear + 1;
@@ -68,13 +65,16 @@ export const Year = () => {
     setSelectedYear(year);
     setIsOpen(false);
   };
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+  };
 
   global.years = selectedYear;
-  console.log(global.years);
+  // console.log(global.years);
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentMargin = isSmOrMd ? 1 : 5;
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <FormControl sx={{ ml: componentMargin }}>
         <StyledSelect
           labelId="year-dropdown-label"
@@ -99,6 +99,6 @@ export const Year = () => {
           ))}
         </StyledSelect>
       </FormControl>
-    </div>
+    </form>
   );
 };

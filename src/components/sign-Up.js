@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility"; // Import visibility icon
+import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { IconButton } from "@mui/material";
 
@@ -48,24 +48,14 @@ export default function SignUp() {
     receiveEmails: false,
   });
   const [acceptedTerms, setAcceptedTerms] = React.useState(false);
-
   const [validationErrors, setValidationErrors] = React.useState({});
   const [errorMessage, setErrorMessage] = React.useState("");
   const [errorMessage1, setErrorMessage1] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
-  const navigate = useNavigate(); //
-  //   const handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     const data = new FormData(event.currentTarget);
-  //     console.log({
-  //       email: data.get("email"),
-  //       password: data.get("password"),
-  //     });
-  //   };
+  const navigate = useNavigate();
+
   const validateForm = () => {
     const errors = {};
-
-   // Check for validation errors and update the 'errors' object
     if (formData.username === "") {
       errors.username = "User name is required";
     }
@@ -100,7 +90,7 @@ export default function SignUp() {
 
     setValidationErrors(errors);
 
-    return Object.keys(errors).length === 0; // Return true if no errors
+    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (event) => {
@@ -115,16 +105,11 @@ export default function SignUp() {
           email: formData.email,
           password: formData.password,
           confirm_password: formData.confirm_password,
-          // You can include other form fields here
         });
-
-        console.log("API Response:", response.data);
-
+        // console.log("API Response:", response.data);
         navigate("/");
-
-        // You can handle the response from the API here
       } catch (error) {
-        console.error("API Error:", error);
+        // console.error("API Error:", error);
         if (error.response.data === "Email already exists") {
           // Email is already in use, display an error message
           setErrorMessage("The email ID provided is already in use.");
@@ -238,13 +223,9 @@ export default function SignUp() {
                       <InputAdornment position="end">
                         {formData.confirm_password.length > 0 && (
                           <IconButton
-                            onClick={() => setShowPassword(!showPassword)} // Toggle visibility
+                            onClick={() => setShowPassword(!showPassword)}
                           >
-                            {showPassword ? (
-                              <Visibility /> // Show the eye icon when password is hidden
-                            ) : (
-                              <VisibilityOff /> // Show the crossed eye icon when password is visible
-                            )}
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
                           </IconButton>
                         )}
                       </InputAdornment>

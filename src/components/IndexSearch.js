@@ -10,53 +10,22 @@ function IndexSearch({
   selectedItem,
   isDrugCodeClicked,
   handleRefresh,
-  selectedCode, // Receive selectedCode as a prop
-  setSelectedCode, // Receive setSelectedCode as a prop
+  selectedCode,
+  setSelectedCode,
 }) {
   const [showTable, setShowTable] = useState(false);
   const [showIndex, setShowIndex] = useState(true);
   const [showDrug, setShowDrug] = useState(false);
   const [results1, setResults1] = useState([]);
-
   const [activeBtn, setActiveBtn] = useState("btn1");
 
   const handleNavBtnClick = (btnId) => {
     setActiveBtn((prevActiveBtn) => (prevActiveBtn === btnId ? null : btnId));
-
     setShowIndex(btnId === "btn1");
     setShowTable(btnId === "btn2");
     setShowDrug(btnId === "btn3");
     handleRefresh();
   };
-  // const handleNavBtnClick = (btnId) => {
-  //   setActiveBtn(btnId);
-  //   setShowIndex(!showIndex);
-  //   setShowTable(false);
-  //   setShowDrug(false);
-  //   handleRefresh();
-  // };
-
-  // const handleNavBtnClick2 = (btnId) => {
-  //   setActiveBtn(btnId);
-  //   setShowTable(!showTable);
-  //   setShowIndex(false);
-  //   setShowDrug(false);
-  //   handleRefresh();
-  // };
-
-  // const handleNavBtnClick3 = (btnId) => {
-  //   setActiveBtn(btnId);
-  //   setShowDrug(!showDrug);
-  //   setShowIndex(false);
-  //   setShowTable(false);
-  //   handleRefresh();
-  // };
-
-  //   const handleRefresh = () => {
-  //     setActiveBtn("btn1");
-  //     setResults1([]);
-  //     setSelectedCode(null);
-  //   };
 
   useEffect(() => {
     if (selectedCode !== null) {
@@ -187,8 +156,8 @@ IndexSearch.propTypes = {
   isNeoplasmCodeClicked: PropTypes.bool,
   selectedItem: PropTypes.object,
   isDrugCodeClicked: PropTypes.bool,
-  handleRefresh: PropTypes.func, // You need to add this prop
-  selectedCode: PropTypes.object, // You don't need to redeclare this prop
+  handleRefresh: PropTypes.func,
+  selectedCode: PropTypes.object,
   setSelectedCode: PropTypes.func,
 };
 

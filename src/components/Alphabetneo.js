@@ -1,5 +1,5 @@
 import { Tab, Tabs, TextField } from "@mui/material";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Neoplasm2 from "./Neoplasm2";
 import Neoplasm1 from "./Neoplasm1";
@@ -53,32 +53,6 @@ function a11yProps(index) {
 export const Alphabetneo = ({ setSelectedCode }) => {
   const [value, setValue] = useState(0);
   const [search, setSearch] = useState("");
-  //const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [selectedCodeDetails, setSelectedCodeDetails] = useState(null);
-  // const tabLabels = Array.from({ length: 26 }, (_, i) =>
-  //   String.fromCharCode(97 + i)
-  // );
-  // const lowercaseSearch = search.toLowerCase();
-  // const neoplasm1Table = useMemo(
-  //   () => <Neoplasm1 onCodeClick={setSelectedCode} filter={lowercaseSearch} />,
-  //   [lowercaseSearch]
-  // );
-
-  // const neoplasm2Table = useMemo(() => {
-  //   return <Neoplasm2 onCodeClick={setSelectedCode} filter={lowercaseSearch} />;
-  // }, [lowercaseSearch]);
-  // // Define a debounce function
-  // const debounce = (func, delay) => {
-  //   let timeoutId;
-  //   return function (...args) {
-  //     if (timeoutId) {
-  //       clearTimeout(timeoutId);
-  //     }
-  //     timeoutId = setTimeout(() => {
-  //       func(...args);
-  //     }, delay);
-  //   };
-  // };
 
   const tabLabels = [
     "a",
@@ -117,7 +91,6 @@ export const Alphabetneo = ({ setSelectedCode }) => {
     }
   });
   useEffect(() => {
-    // Automatically switch to the tab starting with the first letter of the filter text
     const firstLetter = search.charAt(0).toLowerCase();
     const tabIndex = tabLabels.indexOf(firstLetter);
     if (tabIndex !== -1) {
@@ -125,29 +98,21 @@ export const Alphabetneo = ({ setSelectedCode }) => {
     }
   }, [search]);
 
-  // // Define a function to handle search input changes with debounce
-  // const handleSearchChangeDebounced = debounce((value) => {
-  //   setSearch(value);
-  // }, 500); // Adjust the delay (in milliseconds) as needed
   const handleChange = (event, newValue) => {
     setValue(newValue);
     const clickedTabLabel = tabLabels[newValue];
-    console.log("Tab clicked: ", clickedTabLabel);
+    // console.log("Tab clicked: ", clickedTabLabel);
     global.clickedTab2 = clickedTabLabel;
   };
 
-  console.log(search);
+  // console.log(search);
   global.searches = search;
   const handleSearchChange = (event) => {
     const searchText = event.target.value.toLowerCase();
     setSearch(searchText);
 
-    // Set global.clickedTab2 to the search text itself
     global.clickedTab2 = searchText;
   };
-  // const handleCodeDetailsUpdate = (details) => {
-  //   setSelectedCodeDetails(details);
-  // };
 
   return (
     <div>
@@ -164,11 +129,6 @@ export const Alphabetneo = ({ setSelectedCode }) => {
           placeholder=" Use Filter"
           value={search}
           onChange={handleSearchChange}
-          // onChange={(e) => {
-          //   const { value } = e.target;
-          //   setDebouncedSearch(value.toLowerCase()); // Set the debounced search value
-          //   handleSearchChangeDebounced(value.toLowerCase()); // Call the debounced search handler
-          // }}
           aria-label="Search"
         />
       </div>
@@ -202,17 +162,11 @@ export const Alphabetneo = ({ setSelectedCode }) => {
         ))}
       </StyledTabs>
       <div className="tabpanels">
-        {" "}
         {tabComponents.map((component, index) => (
           <CustomTabPanel key={index} value={value} index={index}>
             {value === index && component}
           </CustomTabPanel>
         ))}
-        {/* {tabLabels.map((label, index) => (
-          <CustomTabPanel key={label} value={value} index={index}>
-            {label.toLowerCase() === "a" ? neoplasm1Table : neoplasm2Table}
-          </CustomTabPanel>
-        ))} */}
       </div>
     </div>
   );

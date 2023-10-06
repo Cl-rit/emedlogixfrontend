@@ -1,32 +1,30 @@
 import React, { Fragment, useState } from "react";
-
-import { Box, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { Alphabet } from "./Alphabet";
 import { flexStart } from "../themes/commonStyles";
 
 const IndexTables1 = ({ setResults1, setSelectedCode }) => {
   const [search, setSearch] = useState("");
   const [index, setIndex] = useState(null);
-  const [index1, setIndex1] = useState(null);
   const [clickedCode, setClickedCode] = useState(null);
-  const [result1, setResult1] = useState([]);
   const [results2, setResults2] = useState([]);
-  const [fetchedData, setFetchedData] = useState(null);
-  const [activeBtnIndex, setActiveBtnIndex] = useState(0);
 
   const Code = (global.values?.code || "").replace(/[-.]/g, "");
 
   React.useEffect(() => {
-    console.log("enter index table");
+    // console.log("enter index table");
     const fetchBooks = async () => {
       try {
         if (global.values && global.values.code !== null) {
           const response = await fetch(
-            `/codes/${(global.values.code || "").replace(/[-.]/g, "")}/index`,
+            `/codes/${(global.values.code || "").replace(
+              /[-.]/g,
+              ""
+            )}/index?version=${global.years}`,
             {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+                Authorization: `Bearer ${global.tokens} `,
               },
             }
           );
@@ -34,13 +32,13 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
             const data = await response.json();
             setIndex(data);
           } else {
-            console.error("Failed to fetch data");
+            // console.error("Failed to fetch data");
           }
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       }
     };
 
@@ -50,7 +48,7 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
     }
   }, [global.values?.code]);
 
-  console.log("our index is", index);
+  // console.log("our index is", index);
 
   const handleCodeClick = async (code) => {
     global.isCodeClicked = true;
@@ -78,11 +76,11 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
           global.selectedChapterDetails = data;
           global.selectedCode = code;
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
 
@@ -144,30 +142,12 @@ const IndexTables1 = ({ setResults1, setSelectedCode }) => {
         />
       ) : null}
 
-      {/* {global.values && global.values.code && (
-        <div >
-          <TextField
-            sx={{
-              width: "120px",
-              "& input": {
-                height: "4px",
-                color: (theme) =>
-                  theme.palette.getContrastText(theme.palette.background.paper),
-              },
-            }}
-            placeholder=" Use Filter"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      )} */}
-
       {global.values && global.values.code && (
         <Box sx={{ ...flexStart, mt: 5 }}>
           <div
             style={{
               height: "65vh",
               backgroundColor: "#C7E1ED",
-
               overflow: "auto",
               width: componentWidth,
             }}

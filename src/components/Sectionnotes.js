@@ -18,7 +18,7 @@ const Sectionnotes = () => {
             {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+                Authorization: `Bearer ${global.tokens} `,
               },
             }
           );
@@ -26,12 +26,12 @@ const Sectionnotes = () => {
             const data = await response.json();
             setResults(data);
           } else {
-            console.error("Failed to fetch data");
+            // console.error("Failed to fetch data");
             setResults(null);
           }
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
         setResults(null);
       }
     };
@@ -44,7 +44,7 @@ const Sectionnotes = () => {
       setResults(null);
     }
   }, [global.selectedCodeDetails]);
-  console.log("our result is", results);
+  // console.log("our result is", results);
 
   return (
     <Box

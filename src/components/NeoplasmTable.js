@@ -6,9 +6,8 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
-import { Loads } from "./Loads";
 import { Alphabetneo } from "./Alphabetneo";
 import { flexStart } from "../themes/commonStyles";
 
@@ -45,33 +44,35 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
     const fetchBooks = async () => {
       try {
         if (global.values && global.values.code) {
-          const response = await fetch(`/codes/${Code}/neoplasm`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
-            },
-          });
+          const response = await fetch(
+            `/codes/${Code}/neoplasm?version=${global.years}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+              },
+            }
+          );
           if (response.ok) {
             const data = await response.json();
             setNeo(data);
           } else {
-            console.error("Failed to fetch data");
+            // console.error("Failed to fetch data");
           }
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       }
     };
     setNeo(null);
     fetchBooks();
   }, [global.values?.code]);
-  console.log("our neo is", neo);
+  // console.log("our neo is", neo);
 
   const [word, setWord] = useState("");
   const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
   function handleChange(e) {
     setWord(e.target.value);
   }
@@ -91,10 +92,9 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
 
   const handleCodeClick = async (code) => {
     setClickedCode(code);
-    console.log(clickedCode);
+    // console.log(clickedCode);
     const Code1 = (clickedCode || "").replace(/[-.]/g, "");
 
-    // Fetch code details and update the state immediately
     try {
       if (code) {
         const response = await fetch(
@@ -112,7 +112,6 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
           const data = await response.json();
           setFetchedData(data);
           setResult1(data);
-
           setSelectedCode(Code1);
           global.selectedCodeDetails = data;
           global.selectedSectionDetails = data;
@@ -121,11 +120,11 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
           global.selectedCode = Code1;
           global.isCodeClicked = true;
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
 
@@ -143,17 +142,11 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
     <>
       <Box>
         {global.values && global.values.code == "null" ? (
-          <Alphabetneo
-            setSelectedCode={setSelectedCode}
-            // selectedCodeDetails={results2}
-          />
+          <Alphabetneo setSelectedCode={setSelectedCode} />
         ) : null}
 
         {!global.values && !global.values.code ? (
-          <Alphabetneo
-            setSelectedCode={setSelectedCode}
-            // selectedCodeDetails={results2}
-          />
+          <Alphabetneo setSelectedCode={setSelectedCode} />
         ) : null}
       </Box>
       {global.values && global.values.code !== "null" && (
@@ -170,39 +163,6 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
                 overflowX: "scroll",
               }}
             >
-              {/* <TableHead>
-                <TableRow>
-                  <Box
-                    sx={{
-                      width: "100px",
-                      height: "20%",
-                      marginTop: "5%",
-                    }}
-                  >
-                    {/* <Box sx={{ width: "120px", height: "22%" }}>
-                
-                  <TextField
-                    sx={{
-                      width: "130px",
-                      "& input": {
-                        height: "10px",
-                        bgcolor: "background.paper",
-
-                        color: (theme) =>
-                          theme.palette.getContrastText(
-                            theme.palette.background.paper
-                          ),
-                      },
-                    }}
-                    placeholder="Use Filter"
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-          
-                </Box> 
-             */}
-              {/* </Box>
-                </TableRow>
-              </TableHead> */}
               <TableHead sx={{ height: "20px", border: "1px solid grey" }}>
                 <TableRow
                   sx={{
@@ -365,7 +325,7 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
                                   }}
                                   onClick={() => {
                                     handleCodeClick(chunk[colIndex]);
-                                    scrollToTop(); // Call scrollToTop when the link is clicked
+                                    scrollToTop();
                                   }}
                                 >
                                   {chunk[colIndex]}
@@ -405,7 +365,7 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
                                 }}
                                 onClick={() => {
                                   handleCodeClick(value);
-                                  scrollToTop(); // Call scrollToTop when the link is clicked
+                                  scrollToTop();
                                 }}
                               >
                                 {value}
@@ -424,17 +384,6 @@ export default function NeoplasmTable({ setResults1, setSelectedCode }) {
                 No Neoplasm codes found for the given search criteria.
               </Typography>
             )}
-            {/* {!global.values?.code && neo1 && neo1.length === 0 && (
-                      <div
-                      style={{
-                        marginLeft: "15vw",
-                        color: "#418502",
-                        fontWeight: "800",
-                      }}
-                      >
-                      No Neoplasm codes available in the data.
-                      </div>
-                      )} */}
           </TableContainer>
         </Box>
       )}

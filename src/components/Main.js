@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import IndexSearch from "./IndexSearch";
 import TabularSearch from "./TabularSearch";
-
 import { Box, Stack } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import DownArrowButton from "./DownArrowButton";
@@ -39,8 +38,8 @@ function Main({
             <DownArrowButton />
             <TabularSearch
               refreshMain={refreshMain}
-              selectedCode={selectedCode} // Pass selectedCode to TabularSearch
-              setSelectedCode={setSelectedCode} // Pass setSelectedCode to TabularSearch
+              selectedCode={selectedCode}
+              setSelectedCode={setSelectedCode}
               handleRefresh={handleRefresh}
             />
             <IndexSearch
@@ -48,7 +47,7 @@ function Main({
               isNeoplasmCodeClicked={isNeoplasmCodeClicked}
               selectedItem={selectedItem}
               isDrugCodeClicked={isDrugCodeClicked}
-              selectedCode={selectedCode} // Pass selectedCode
+              selectedCode={selectedCode}
               setSelectedCode={setSelectedCode}
               handleRefresh={handleRefresh}
             />
@@ -61,14 +60,14 @@ function Main({
               isNeoplasmCodeClicked={isNeoplasmCodeClicked}
               selectedItem={selectedItem}
               isDrugCodeClicked={isDrugCodeClicked}
-              selectedCode={selectedCode} // Pass selectedCode
+              selectedCode={selectedCode}
               setSelectedCode={setSelectedCode}
               handleRefresh={handleRefresh}
             />
             <TabularSearch
               refreshMain={refreshMain}
-              selectedCode={selectedCode} // Pass selectedCode to TabularSearch
-              setSelectedCode={setSelectedCode} // Pass setSelectedCode to TabularSearch
+              selectedCode={selectedCode}
+              setSelectedCode={setSelectedCode}
               handleRefresh={handleRefresh}
             />
           </>

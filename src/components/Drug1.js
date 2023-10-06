@@ -27,42 +27,43 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
     height: 1,
-    // padding: "0px 12px 0px 0px",
   },
-  // hide last border
+
   "&:last-child td, &:last-child th": {
     height: 1,
   },
 }));
 export default function Drug1({ onCodeClick, filterText }) {
-  console.log("neo enter");
+  // console.log("neo enter");
   const [drug, setDrug] = useState(null);
   const [drug1, setDrug1] = useState(null);
-  // const [search, setSearch] = useState("");
+
   const [isLoading, setIsLoading] = useState(true);
   const [clickedCode, setClickedCode] = useState(null);
   const [result1, setResult1] = useState([]);
   const [fetchedData, setFetchedData] = useState(null);
   const Code = (global.values?.code || "").replace(/[-.]/g, "");
-  // const search = global.searches.toLowerCase();
 
   React.useEffect(() => {
     const fetchAllDetailsDrugData = async () => {
       try {
-        const response = await fetch(`/codes/alldetails/drug?title=a`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${global.tokens} `,
-          },
-        });
+        const response = await fetch(
+          `/codes/alldetails/drug?title=a&version=${global.years}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${global.tokens} `,
+            },
+          }
+        );
         if (response.ok) {
           const data = await response.json();
           setDrug1(data);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -71,7 +72,6 @@ export default function Drug1({ onCodeClick, filterText }) {
     setDrug1(null);
     fetchAllDetailsDrugData();
   }, []);
-  // const search = global.searches;
 
   function getTitleFromNestedChild(row) {
     if (row.child?.child?.child?.child?.code) {
@@ -101,7 +101,7 @@ export default function Drug1({ onCodeClick, filterText }) {
   });
   const handleCodeClick = async (code) => {
     setClickedCode(code);
-    console.log(clickedCode);
+    // console.log(clickedCode);
     const Code1 = (clickedCode || "").replace(/[-.]/g, "");
 
     try {
@@ -122,7 +122,6 @@ export default function Drug1({ onCodeClick, filterText }) {
           setFetchedData(data);
           setResult1(data);
 
-          // setSelectedCode(Code1);
           global.selectedCodeDetails = data;
           global.selectedSectionDetails = data;
           global.selectedChapterDetails = data;
@@ -131,11 +130,11 @@ export default function Drug1({ onCodeClick, filterText }) {
           global.isCodeClicked = true;
           onCodeClick(Code1);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -233,13 +232,6 @@ export default function Drug1({ onCodeClick, filterText }) {
             </TableHead>
             <TableBody>
               {global.values.code !== null &&
-                // drug
-                //   ?.filter((item) => {
-                //     return (
-                //       search === "" || // Convert item.title to lowercase for case-insensitive search
-                //       item.title.toLowerCase().includes(search)
-                //     );
-                //   })
                 filteredDrug?.map((row) => {
                   const hasValidParentCode = row.code && row.code[0] !== "null";
                   const hasValidChildCode =
@@ -326,12 +318,6 @@ export default function Drug1({ onCodeClick, filterText }) {
                   ));
                 })}
               {global.values.code !== null &&
-                // drug1
-                //   ?.filter((item) => {
-                //     return search === ""
-                //       ? item
-                //       : item.title.toLowerCase().includes(search);
-                //   })
                 filteredDrug1?.map((row) => {
                   return (
                     <StyledTableRow key={row.id}>
@@ -353,7 +339,7 @@ export default function Drug1({ onCodeClick, filterText }) {
                               }}
                               onClick={() => {
                                 handleCodeClick(value);
-                                scrollToTop(); // Call scrollToTop when the link is clicked
+                                scrollToTop();
                               }}
                             >
                               {value}

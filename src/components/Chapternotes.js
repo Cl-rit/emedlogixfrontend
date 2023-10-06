@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 const Chapternotes = () => {
   const [results, setResults] = useState(null);
-  //const Code = global.values?.code?.replace(/-/g, "") || '';
+
   const Code = (global.values?.code || "").replace(/[-.]/g, "");
   useEffect(() => {
     const fetchBooks = async () => {
@@ -18,7 +18,7 @@ const Chapternotes = () => {
             {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+                Authorization: `Bearer ${global.tokens} `,
               },
             }
           );
@@ -27,24 +27,24 @@ const Chapternotes = () => {
             setResults(data);
           } else {
             setResults(null);
-            console.error("Failed to fetch data");
+            // console.error("Failed to fetch data");
           }
         }
       } catch (error) {
         setResults(null);
-        console.error("Error:", error);
+        // console.error("Error:", error);
       }
     };
     fetchBooks();
   }, [global.values]);
   useEffect(() => {
     if (global.isCodeClicked) {
-      setResults(global.selectedCodeDetails); // Use the stored details
+      setResults(global.selectedCodeDetails);
     } else {
       setResults(null);
     }
   }, [global.selectedCodeDetails]);
-  console.log("our result is", results);
+  // console.log("our result is", results);
   const shouldDisplayClassification = (classification, index) => {
     if (index === 0) {
       return true;

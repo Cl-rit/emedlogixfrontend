@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Table, flexBetweenAlign1 } from "../themes/commonStyles";
+import { Table } from "../themes/commonStyles";
 
 const Codenotes = () => {
   const [results, setResults] = useState(null);
@@ -25,12 +25,12 @@ const Codenotes = () => {
             const data = await response.json();
             setResults(data);
           } else {
-            console.error("Failed to fetch data");
+            // console.error("Failed to fetch data");
             setResults(null);
           }
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
         setResults(null);
       }
     };
@@ -45,7 +45,7 @@ const Codenotes = () => {
     }
   }, [global.selectedCodeDetails]);
 
-  console.log("our result is", results);
+  // console.log("our result is", results);
 
   return (
     <>

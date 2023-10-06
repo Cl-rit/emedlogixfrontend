@@ -7,7 +7,6 @@ const DownArrowButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Add an event listener to track scroll position
     const handleScroll = () => {
       if (window.scrollY < 150) {
         setIsVisible(true);
@@ -16,19 +15,16 @@ const DownArrowButton = () => {
       }
     };
 
-    // Attach the event listener
     window.addEventListener("scroll", handleScroll);
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const scrollDown = () => {
-    // Smooth scroll down when the button is clicked
     window.scrollBy({
-      top: 700, // Adjust as needed for scrolling distance
+      top: 700,
       behavior: "smooth",
     });
   };

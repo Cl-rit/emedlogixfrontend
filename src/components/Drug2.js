@@ -29,16 +29,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     height: 1,
     padding: "0px 12px 0px 0px",
   },
-  // hide last border
+
   "&:last-child td, &:last-child th": {
     height: 1,
   },
 }));
 export default function Drug2({ onCodeClick, filterText }) {
-  console.log("neo enter");
+  // console.log("neo enter");
   const [drug, setDrug] = useState(null);
   const [drug1, setDrug1] = useState(null);
-  // const [search, setSearch] = useState("");
+
   const [isLoading, setIsLoading] = useState(true);
   const [clickedCode, setClickedCode] = useState(null);
   const [result1, setResult1] = useState([]);
@@ -62,7 +62,7 @@ export default function Drug2({ onCodeClick, filterText }) {
     const fetchAllDetailsDrugData = async () => {
       try {
         const response = await fetch(
-          `/codes/alldetails/drug?title=${global.clickedTab2}`,
+          `/codes/alldetails/drug?title=${global.clickedTab2}&version=${global.years}`,
           {
             method: "GET",
             headers: {
@@ -74,10 +74,10 @@ export default function Drug2({ onCodeClick, filterText }) {
           const data = await response.json();
           setDrug1(data);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -103,7 +103,7 @@ export default function Drug2({ onCodeClick, filterText }) {
 
   const handleCodeClick = async (code) => {
     setClickedCode(code);
-    console.log(clickedCode);
+    // console.log(clickedCode);
     const Code1 = (clickedCode || "").replace(/[-.]/g, "");
 
     try {
@@ -131,11 +131,11 @@ export default function Drug2({ onCodeClick, filterText }) {
           global.isCodeClicked = true;
           onCodeClick(Code1);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -233,13 +233,6 @@ export default function Drug2({ onCodeClick, filterText }) {
             </TableHead>
             <TableBody>
               {global.values.code !== null &&
-                // drug
-                //   ?.filter((item) => {
-                //     return (
-                //       search.toLowerCase() === "" ||
-                //       item.title.toLowerCase().includes(search)
-                //     );
-                //   })
                 filteredDrug?.map((row) => {
                   const hasValidParentCode = row.code && row.code[0] !== "null";
                   const hasValidChildCode =
@@ -315,7 +308,7 @@ export default function Drug2({ onCodeClick, filterText }) {
                               style={{ borderBottom: "0.5px solid blue" }}
                               onClick={() => {
                                 handleCodeClick(chunk[colIndex]);
-                                scrollToTop(); // Call scrollToTop when the link is clicked
+                                scrollToTop();
                               }}
                             >
                               {chunk[colIndex]}
@@ -329,12 +322,6 @@ export default function Drug2({ onCodeClick, filterText }) {
                   ));
                 })}
               {global.values.code !== null &&
-                // drug1
-                //   ?.filter((item) => {
-                //     return search.toLowerCase() === ""
-                //       ? item
-                //       : item.title.toLowerCase().includes(search);
-                //   })
                 filteredDrug1?.map((row) => {
                   return (
                     <StyledTableRow key={row.id}>
@@ -356,7 +343,7 @@ export default function Drug2({ onCodeClick, filterText }) {
                               }}
                               onClick={() => {
                                 handleCodeClick(value);
-                                scrollToTop(); // Call scrollToTop when the link is clicked
+                                scrollToTop();
                               }}
                             >
                               {value}

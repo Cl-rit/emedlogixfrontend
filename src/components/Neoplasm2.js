@@ -59,11 +59,11 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
       try {
         if (global.values.code == null || global.values.code == "null") {
           const response = await fetch(
-            `/codes/alldetails/neoplasm?title=${global.clickedTab2}`,
+            `/codes/alldetails/neoplasm?title=${global.clickedTab2}&version=${global.years}`,
             {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+                Authorization: `Bearer ${global.tokens} `,
               },
             }
           );
@@ -72,10 +72,10 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
             setNeo1(data);
           }
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -83,15 +83,8 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
     setNeo1(null);
     fetchBooks();
   }, []);
-  console.log("our neo1 is", neo1);
-  //const search = global.searches;
-
-  const [word, setWord] = useState("");
-  // // const [search, setSearch] = useState("");
+  // console.log("our neo1 is", neo1);
   const [isLoading, setIsLoading] = useState(true);
-  // function handleChange(e) {
-  //   setWord(e.target.value);
-  // }
   function getTitleFromNestedChild(row) {
     if (row.child?.child?.child?.child?.code) {
       return `${row.child.title}-${row.child.child.title}-${row.child.child.child.title}-${row.child.child.child.child.title}`;
@@ -108,7 +101,7 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
 
   const handleCodeClick = async (code) => {
     setClickedCode(code);
-    console.log(clickedCode);
+    // console.log(clickedCode);
     const Code1 = (clickedCode || "").replace(/[-.]/g, "");
 
     try {
@@ -128,7 +121,6 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
           const data = await response.json();
           setFetchedData(data);
           setResult1(data);
-
           global.selectedCodeDetails = data;
           global.selectedSectionDetails = data;
           global.selectedChapterDetails = data;
@@ -137,11 +129,11 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
           global.isCodeClicked = true;
           onCodeClick(Code1);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -156,22 +148,6 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
   };
   return (
     <>
-      {/* <Box sx={{ width: "120px", height: "22%", mt: "-47px", ml: "5px" }}>
-        <TextField
-          sx={{
-            width: "130px",
-            "& input": {
-              height: "10px",
-              bgcolor: "background.paper",
-
-              color: (theme) =>
-                theme.palette.getContrastText(theme.palette.background.paper),
-            },
-          }}
-          placeholder="Use Filter"
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </Box> */}{" "}
       <Box sx={{ ...flexStart }}>
         <TableContainer sx={{ height: "65vh", width: componentWidth }}>
           <Table stickyHeader>
@@ -244,15 +220,6 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
             </TableHead>
             <TableBody>
               {global.values.code !== null &&
-                // neo
-                //   ?.filter((item) => {
-                //     return (
-                //       search.toLowerCase() === "" ||
-                //       item.title.toLowerCase().includes(search)
-                //     );
-                //   })
-                //   .map((row) => {
-
                 filteredNeo?.map((row) => {
                   const hasValidParentCode = row.code && row.code[0] !== "null";
                   const hasValidChildCode =
@@ -337,13 +304,6 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
                   ));
                 })}
               {global.values.code !== null &&
-                // neo1
-                //   ?.filter((item) => {
-                //     return search.toLowerCase() === ""
-                //       ? item
-                //       : item.title.toLowerCase().includes(search);
-                //   })
-                //   .map((row) => (
                 filteredNeo1?.map((row) => {
                   return (
                     <StyledTableRow key={row.id}>
@@ -365,7 +325,7 @@ export default function Neoplasm2({ onCodeClick, filterText }) {
                               }}
                               onClick={() => {
                                 handleCodeClick(value);
-                                scrollToTop(); // Call scrollToTop when the link is clicked
+                                scrollToTop();
                               }}
                             >
                               {value}

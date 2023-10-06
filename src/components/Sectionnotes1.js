@@ -12,10 +12,9 @@ const removeDuplicates = (arr) => {
     return !duplicate;
   });
 };
-
 const renderChildRows = (row, depthLevel = 1) => {
   if (row.child) {
-    const paddingLeftValue = 20 + depthLevel * 20; // Increase padding for deeper levels
+    const paddingLeftValue = 20 + depthLevel * 20;
     return (
       <>
         <tr key={row.child.id}>
@@ -61,15 +60,15 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
   });
 
   React.useEffect(() => {
-    console.log("enter index table");
+    // console.log("enter index table");
     const fetchBooks = async () => {
       try {
         const response = await fetch(
-          `codes/alldetails/index/title?filterBy=${global.clickedTab2}`,
+          `codes/alldetails/index/title?filterBy=${global.clickedTab2}&version=${global.years}`,
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+              Authorization: `Bearer ${global.tokens} `,
             },
           }
         );
@@ -77,23 +76,19 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
           const data = await response.json();
           setIndex1(data);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       } finally {
         setIsLoading(false);
       }
     };
     setIsLoading(true);
-    // Clear the previous index data before fetching new data
     fetchBooks();
   }, []);
-  console.log("our index1 is", index1);
-  console.log(global.searches);
-  const search = global.searches;
-  // Filter out duplicate rows based on the "code" and "title"
-  const filteredIndexRows = removeDuplicates(index1 || []);
+  // console.log("our index1 is", index1);
+  // console.log(global.searches);
 
   const handleCodeClick = async (code) => {
     setClickedCode(code);
@@ -104,7 +99,6 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
     global.intable = null;
     global.selectedCode = code;
     global.isCodeClicked = true;
-    // global.values = null;
   };
   React.useEffect(() => {
     if (fetchedData) {
@@ -121,19 +115,19 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+              Authorization: `Bearer ${global.tokens} `,
             },
           }
         );
         if (response.ok) {
           const data = await response.json();
-          setFetchedData(data); // Store the fetched data in the state
+          setFetchedData(data);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -156,12 +150,6 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
         >
           <tbody style={{ textAlign: "left" }}>
             {!global.values?.code &&
-              // index1
-              //   ?.filter((item) => {
-              //     return search.toLowerCase() === ""
-              //       ? item
-              //       : item.title.toLowerCase().includes(search.toLowerCase());
-              //   })
               filteredindex1?.map((row) => {
                 return (
                   <Fragment key={row.id}>
@@ -174,7 +162,7 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
                             margin: 2,
                           }}
                         >
-                          {row.nemod !== null && row.nemod !== "null" ? ( // Check if nemod has a value
+                          {row.nemod !== null && row.nemod !== "null" ? (
                             <li>
                               {row.title} {row.nemod}
                             </li>
@@ -229,7 +217,7 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
                   </Fragment>
                 );
               })}
-          </tbody>{" "}
+          </tbody>
           <Box sx={{ ml: -10 }}>{isLoading && <Loads />}</Box>
         </div>
       </Box>

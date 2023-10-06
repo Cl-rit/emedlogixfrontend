@@ -1,11 +1,4 @@
-import {
-  Box,
-  Typography,
-  Tab,
-  Tabs,
-  useMediaQuery,
-  tabsClasses,
-} from "@mui/material";
+import { Box, Typography, Tab, Tabs, useMediaQuery } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Codedet from "./Codedet";
 import PropTypes from "prop-types";
@@ -61,9 +54,6 @@ function a11yProps(index) {
 
 const TabularSearch = ({ refreshMain, selectedCode, setSelectedCode }) => {
   const [value, setValue] = useState(0);
-
-  const [results1, setResults1] = useState([]);
-
   useEffect(() => {
     if (refreshMain) {
       handleRefresh();
@@ -74,7 +64,6 @@ const TabularSearch = ({ refreshMain, selectedCode, setSelectedCode }) => {
   };
   const handleRefresh = () => {
     setValue(0);
-
     setSelectedCode(null);
   };
   useEffect(() => {
@@ -229,5 +218,4 @@ TabularSearch.propTypes = {
   selectedCode: PropTypes.object,
   setSelectedCode: PropTypes.func,
 };
-
 export default TabularSearch;

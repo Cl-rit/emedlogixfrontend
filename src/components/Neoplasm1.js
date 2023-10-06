@@ -6,7 +6,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { flexStart } from "../themes/commonStyles";
 import { Loads } from "./Loads";
@@ -39,27 +39,29 @@ export default function Neoplasm1({ onCodeClick, filterText }) {
   const [result1, setResult1] = useState([]);
   const [fetchedData, setFetchedData] = useState(null);
   const Code = (global.values?.code || "").replace(/[-.]/g, "");
-  const [data, setData] = useState(false);
-  // const search = global.searches.toLowerCase();
+
   React.useEffect(() => {
     const fetchBooks = async () => {
       try {
         if (global.values.code == null || global.values.code == "null") {
-          const response = await fetch(`/codes/alldetails/neoplasm?title=a`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
-            },
-          });
+          const response = await fetch(
+            `/codes/alldetails/neoplasm?title=a&version=${global.years}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${global.tokens} `,
+              },
+            }
+          );
           if (response.ok) {
             const data = await response.json();
             setNeo1(data);
           }
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -67,10 +69,9 @@ export default function Neoplasm1({ onCodeClick, filterText }) {
     setNeo1(null);
     fetchBooks();
   }, []);
-  console.log("our neo1 is", neo1);
+  // console.log("our neo1 is", neo1);
 
   const [word, setWord] = useState("");
-  // const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   function handleChange(e) {
     setWord(e.target.value);
@@ -103,7 +104,7 @@ export default function Neoplasm1({ onCodeClick, filterText }) {
   });
   const handleCodeClick = async (code) => {
     setClickedCode(code);
-    console.log(clickedCode);
+    // console.log(clickedCode);
 
     global.Code1 = (clickedCode || "").replace(/[-.]/g, "");
 
@@ -134,11 +135,11 @@ export default function Neoplasm1({ onCodeClick, filterText }) {
           global.isCodeClicked = true;
           onCodeClick(global.Code1);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -153,20 +154,6 @@ export default function Neoplasm1({ onCodeClick, filterText }) {
   };
   return (
     <>
-      {/* <TextField
-        sx={{
-          width: "200px",
-          "& input": {
-            height: "4px",
-            color: (theme) =>
-              theme.palette.getContrastText(theme.palette.background.paper),
-          },
-        }}
-        placeholder=" Use Filter"
-        onChange={(e) => setSearch(e.target.value)}
-        aria-label="Search"
-      /> */}
-
       <Box sx={{ ...flexStart }}>
         <TableContainer
           sx={{
@@ -250,14 +237,6 @@ export default function Neoplasm1({ onCodeClick, filterText }) {
             </TableHead>
             <TableBody>
               {global.values.code !== null &&
-                // neo
-                //   ?.filter((item) => {
-                //     return (
-                //       search === "" || // Convert item.title to lowercase for case-insensitive search
-                //       item.title.toLowerCase().includes(search)
-                //     );
-                //   })
-                // .map((row) => {
                 filteredNeo?.map((row) => {
                   const hasValidParentCode = row.code && row.code[0] !== "null";
                   const hasValidChildCode =
@@ -342,13 +321,6 @@ export default function Neoplasm1({ onCodeClick, filterText }) {
                   ));
                 })}
               {global.values.code !== null &&
-                // neo1
-                //   ?.filter((item) => {
-                //     return search.toLowerCase() === ""
-                //       ? item
-                //       : item.title.toLowerCase().includes(search);
-                //   })
-                //   .map((row) => (
                 filteredNeo1?.map((row) => {
                   return (
                     <StyledTableRow key={row.id}>
@@ -370,7 +342,7 @@ export default function Neoplasm1({ onCodeClick, filterText }) {
                               }}
                               onClick={() => {
                                 handleCodeClick(value);
-                                scrollToTop(); // Call scrollToTop when the link is clicked
+                                scrollToTop();
                               }}
                             >
                               {value}

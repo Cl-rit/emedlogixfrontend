@@ -1,20 +1,17 @@
 import { Close } from "@mui/icons-material";
 import { Box, Button, useMediaQuery } from "@mui/material";
-
 import React, { useEffect, useState } from "react";
 import { flexBetweenAlign2 } from "../themes/commonStyles";
 
 const Codedet = () => {
-  console.log("enter codedet page");
-  console.log(global.index, "codedet index value");
+  // console.log("enter codedet page");
+  // console.log(global.index, "codedet index value");
   const [result, setResult] = useState(null);
-  const [result1, setResult1] = useState(null);
   const [isClosed, setIsClosed] = useState(false);
-  console.log(global.results);
-  console.log(global.values.code);
+  // console.log(global.results);
+  // console.log(global.values.code);
 
   const Code = (global.values?.code || "").replace(/[-.]/g, "");
-
   useEffect(() => {
     if (global.selectedCodeDetails) {
       setResult(global.selectedCodeDetails);
@@ -22,7 +19,6 @@ const Codedet = () => {
       setResult(null);
     }
   }, [global.selectedCodeDetails]);
-
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -35,7 +31,7 @@ const Codedet = () => {
             {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
+                Authorization: `Bearer ${global.tokens} `,
               },
             }
           );
@@ -43,11 +39,11 @@ const Codedet = () => {
             const data = await response.json();
             setResult(data);
           } else {
-            console.error("Failed to fetch data");
+            // console.error("Failed to fetch data");
           }
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       }
     };
     fetchBooks();
@@ -56,7 +52,7 @@ const Codedet = () => {
     setIsClosed(true);
     window.location.reload();
   };
-  console.log("our result is", result);
+  // console.log("our result is", result);
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const componentWidth = isSmOrMd ? "auto" : "170px";
   const componentHeight = isSmOrMd ? "auto" : "2vh";
@@ -117,7 +113,6 @@ const Codedet = () => {
                           width: componentWidth,
                           height: componentHeight,
                           color: "white",
-
                           backgroundColor: "green",
                           textTransform: "lowercase",
                           fontWeight: "700px",
@@ -138,7 +133,6 @@ const Codedet = () => {
                           color: "white",
                           width: componentWidth,
                           height: componentHeight,
-
                           backgroundColor: "orange",
                           textTransform: "lowercase",
                           fontWeight: "700px",

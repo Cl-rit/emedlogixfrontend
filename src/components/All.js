@@ -3,7 +3,7 @@ import { Header } from "./Header";
 import { Year } from "./Year";
 import Search1 from "./Search1";
 import { flexStart, flexCenter } from "../themes/commonStyles";
-import { Box, Stack } from "@mui/material";
+import { Box } from "@mui/material";
 import Main from "./Main";
 
 const All = () => {
@@ -37,7 +37,7 @@ const All = () => {
           selectedItem={selectedItem}
           isDrugCodeClicked={isDrugCodeClicked}
           onSelectedItemChange={handleSelectedItemChange}
-          onNeoplasmCodeClick={handleNeoplasmCodeClick} // Pass the callback // Pass the callback
+          onNeoplasmCodeClick={handleNeoplasmCodeClick}
           onDrugCodeClick={handleDrugCodeClick}
         />
       </Box>
@@ -45,10 +45,9 @@ const All = () => {
         <Main
           isValueSelected={isValueSelected}
           refreshMain={refreshMain}
-          // isNeoplasmCodeClicked={isNeoplasmCodeClicked}
           selectedItem={selectedItem}
           isDrugCodeClicked={isDrugButtonActive}
-          isNeoplasmCodeClicked={isNeoplasmButtonActive} // Pass the state to Main
+          isNeoplasmCodeClicked={isNeoplasmButtonActive}
         />
       </Box>
     </div>

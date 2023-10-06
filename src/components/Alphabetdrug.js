@@ -1,9 +1,9 @@
 import { Tab, Tabs, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import Drug1 from "./Drug1";
 import Drug2 from "./Drug2";
 import { styled } from "@mui/material/styles";
+import PropTypes from "prop-types";
 const StyledTabs = styled((props) => (
   <Tabs
     {...props}
@@ -51,12 +51,8 @@ function a11yProps(index) {
 
 export const Alphabetdrug = ({ setSelectedCode }) => {
   const [value, setValue] = useState(0);
-  const [selectedCodeDetails, setSelectedCodeDetails] = useState(null);
-  // const [debouncedSearch, setDebouncedSearch] = useState("");
+
   const [search, setSearch] = useState("");
-  // const tabLabels = Array.from({ length: 26 }, (_, i) =>
-  //   String.fromCharCode(97 + i)
-  // );
 
   const tabLabels = [
     "a",
@@ -87,33 +83,6 @@ export const Alphabetdrug = ({ setSelectedCode }) => {
     "z",
   ];
 
-  // const lowercaseSearch = search.toLowerCase();
-  // // Define memoized tables for drug1 and drug2
-  // const drug1Table = useMemo(() => {
-  //   return <Drug1 onCodeClick={setSelectedCode} filter={lowercaseSearch} />;
-  // }, [lowercaseSearch]);
-
-  // const drug2Table = useMemo(() => {
-  //   return <Drug2 onCodeClick={setSelectedCode} filter={lowercaseSearch} />;
-  // }, [lowercaseSearch]);
-
-  // // Define a debounce function
-  // const debounce = (func, delay) => {
-  //   let timeoutId;
-  //   return function (...args) {
-  //     if (timeoutId) {
-  //       clearTimeout(timeoutId);
-  //     }
-  //     timeoutId = setTimeout(() => {
-  //       func(...args);
-  //     }, delay);
-  //   };
-  // };
-  // // Define a function to handle search input changes with debounce
-  // const handleSearchChangeDebounced = debounce((value) => {
-  //   setSearch(value);
-  // }, 500); // Adjust the delay (in milliseconds) as needed
-
   const tabComponents = tabLabels.map((label) => {
     if (label === "a") {
       return <Drug1 onCodeClick={setSelectedCode} filterText={search} />;
@@ -122,7 +91,6 @@ export const Alphabetdrug = ({ setSelectedCode }) => {
     }
   });
   useEffect(() => {
-    // Automatically switch to the tab starting with the first letter of the filter text
     const firstLetter = search.charAt(0).toLowerCase();
     const tabIndex = tabLabels.indexOf(firstLetter);
     if (tabIndex !== -1) {
@@ -130,31 +98,21 @@ export const Alphabetdrug = ({ setSelectedCode }) => {
     }
   }, [search]);
 
-  // const handleSearchChange = (event) => {
-  //   const searchText = event.target.value.toLowerCase();
-  //   setSearch(searchText);
-
-  //   // Set global.clickedTab2 to the search text itself
-  //   global.clickedTab2 = searchText;
-  // };
   const handleChange = (event, newValue) => {
     setValue(newValue);
     const clickedTabLabel = tabLabels[newValue];
-    console.log("Tab clicked: ", clickedTabLabel);
+    // console.log("Tab clicked: ", clickedTabLabel);
     global.clickedTab2 = clickedTabLabel;
   };
-  console.log(search);
+  // console.log(search);
   global.searches = search;
   const handleSearchChange = (event) => {
     const searchText = event.target.value.toLowerCase();
     setSearch(searchText);
 
-    // Set global.clickedTab2 to the search text itself
     global.clickedTab2 = searchText;
   };
-  // const handleCodeDetailsUpdate = (details) => {
-  //   setSelectedCodeDetails(details);
-  // };
+
   return (
     <div>
       <div style={{ marginTop: 20 }}>
@@ -208,11 +166,6 @@ export const Alphabetdrug = ({ setSelectedCode }) => {
             {value === index && component}
           </CustomTabPanel>
         ))}
-        {/* {tabLabels.map((label, index) => (
-          <CustomTabPanel key={label} value={value} index={index}>
-            {label.toLowerCase() === "a" ? drug1Table : drug2Table}
-          </CustomTabPanel>
-        ))} */}
       </div>
     </div>
   );

@@ -6,10 +6,8 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Box, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
-
-import { Loads } from "./Loads";
 import { Alphabetdrug } from "./Alphabetdrug";
 import { flexStart } from "../themes/commonStyles";
 
@@ -31,13 +29,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     height: 1,
     padding: "0px 12px 0px 0px",
   },
-  // hide last border
+
   "&:last-child td, &:last-child th": {
     height: 1,
   },
 }));
 export default function DrugTable({ setResults1, setSelectedCode }) {
-  console.log("neo enter");
+  // console.log("neo enter");
   const [drug, setDrug] = useState(null);
   const [drug1, setDrug1] = useState(null);
   const [search, setSearch] = useState("");
@@ -51,23 +49,26 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
     const fetchDrugData = async () => {
       try {
         if (global.values && global.values.code) {
-          const response = await fetch(`/codes/${Code}/drug`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
-            },
-          });
+          const response = await fetch(
+            `/codes/${Code}/drug?version=${global.years}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${global.tokens} `,
+              },
+            }
+          );
           if (response.ok) {
             const data = await response.json();
             setDrug(data);
           } else {
-            console.error("Failed to fetch data");
+            // console.error("Failed to fetch data");
           }
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       }
     };
 
@@ -75,24 +76,26 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
     fetchDrugData();
   }, [global.values?.code]);
 
-  //all values of drug
   React.useEffect(() => {
     const fetchAllDetailsDrugData = async () => {
       try {
-        const response = await fetch(`/codes/alldetails/drug?title=a`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${global.tokens} `, // Replace with your actual token
-          },
-        });
+        const response = await fetch(
+          `/codes/alldetails/drug?title=a&version=${global.years}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${global.tokens} `,
+            },
+          }
+        );
         if (response.ok) {
           const data = await response.json();
           setDrug1(data);
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -117,10 +120,9 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
 
   const handleCodeClick = async (code) => {
     setClickedCode(code);
-    console.log(clickedCode);
+    // console.log(clickedCode);
     const Code1 = (clickedCode || "").replace(/[-.]/g, "");
 
-    // Fetch code details and update the state immediately
     try {
       if (code) {
         const response = await fetch(
@@ -138,7 +140,6 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
           const data = await response.json();
           setFetchedData(data);
           setResult1(data);
-
           setSelectedCode(Code1);
           global.selectedCodeDetails = data;
           global.selectedSectionDetails = data;
@@ -147,11 +148,11 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
           global.selectedCode = Code1;
           global.isCodeClicked = true;
         } else {
-          console.error("Failed to fetch data");
+          // console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
   const isSmOrMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -189,36 +190,6 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
                 overflowX: "scroll",
               }}
             >
-              {/* <TableHead sx={{ height: "5px", minHeight: "10px" }}>
-                <TableRow>
-                  <Box
-                    sx={{
-                      width: "100px",
-                      height: "20%",
-                      marginTop: "5%",
-                    }}
-                  > */}
-              {/* <Box sx={{ width: "120px", height: "22%",  }}>
-                          <TextField
-                            sx={{
-                              width: "130px",
-                              "& input": {
-                                height: "10px",
-                                bgcolor: "background.paper",
-                                marginTop: "-5%",
-                                color: (theme) =>
-                                  theme.palette.getContrastText(
-                                    theme.palette.background.paper
-                                  ),
-                              },
-                            }}
-                            placeholder="Use Filter"
-                            onChange={(e) => setSearch(e.target.value)}
-                          />
-                        </Box> */}
-              {/* </Box>
-                </TableRow>
-              </TableHead> */}
               <TableHead sx={{ height: "20px", border: "1px solid grey" }}>
                 <TableRow
                   sx={{
@@ -379,7 +350,7 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
                                   style={{ borderBottom: "0.5px solid blue" }}
                                   onClick={() => {
                                     handleCodeClick(chunk[colIndex]);
-                                    scrollToTop(); // Call scrollToTop when the link is clicked
+                                    scrollToTop();
                                   }}
                                 >
                                   {chunk[colIndex]}
@@ -419,7 +390,7 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
                                 }}
                                 onClick={() => {
                                   handleCodeClick(value);
-                                  scrollToTop(); // Call scrollToTop when the link is clicked
+                                  scrollToTop();
                                 }}
                               >
                                 {value}
@@ -432,7 +403,6 @@ export default function DrugTable({ setResults1, setSelectedCode }) {
                       </StyledTableRow>
                     ))}
               </TableBody>
-              {/* {isLoading && <Loads />} */}
             </Table>
             {global.values?.code !== null && drug && drug.length === 0 && (
               <Typography ml="2%" color="#053559" fontWeight="800" mt="5vh">
