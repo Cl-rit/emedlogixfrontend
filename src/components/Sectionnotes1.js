@@ -148,76 +148,77 @@ const Sectionnotes1 = ({ onCodeClick, filterText }) => {
             width: componentWidth,
           }}
         >
-          <tbody style={{ textAlign: "left" }}>
-            {!global.values?.code &&
-              filteredindex1?.map((row) => {
-                return (
-                  <Fragment key={row.id}>
-                    <tr>
-                      <td>
-                        <ul
-                          style={{
-                            listStyleType: "square",
-                            paddingLeft: "20px",
-                            margin: 2,
-                          }}
-                        >
-                          {row.nemod !== null && row.nemod !== "null" ? (
-                            <li>
-                              {row.title} {row.nemod}
-                            </li>
-                          ) : (
-                            <li>{row.title}</li>
-                          )}
-                        </ul>
-                      </td>
-                      {row.seealso !== null && row.seealso !== "null" && (
+          <table>
+            <tbody style={{ textAlign: "left" }}>
+              {!global.values?.code &&
+                filteredindex1?.map((row) => {
+                  return (
+                    <Fragment key={row.id}>
+                      <tr>
                         <td>
-                          <a
+                          <ul
                             style={{
-                              color: "blue",
-                              borderBottom: "1px solid blue",
+                              listStyleType: "square",
+                              paddingLeft: "20px",
+                              margin: 2,
                             }}
                           >
-                            SeeAlso {row.seealso}
-                          </a>
-                          z
+                            {row.nemod !== null && row.nemod !== "null" ? (
+                              <li>
+                                {row.title} {row.nemod}
+                              </li>
+                            ) : (
+                              <li>{row.title}</li>
+                            )}
+                          </ul>
                         </td>
-                      )}
-                      {row.see !== null && row.see !== "null" && (
-                        <td>
-                          <a
-                            style={{
-                              color: "blue",
-                              borderBottom: "1px solid blue",
-                            }}
-                          >
-                            See {row.see}
-                          </a>
-                        </td>
-                      )}
-                      {row.code !== null && row.code !== "null" && (
-                        <td>
-                          <a
-                            style={{
-                              color: "blue",
-                              borderBottom: "1px solid blue",
-                            }}
-                            onClick={() => {
-                              handleCodeClick(row.code);
-                              scrollToTop();
-                            }}
-                          >
-                            {row.code}
-                          </a>
-                        </td>
-                      )}
-                    </tr>
-                    {renderChildRows(row)}
-                  </Fragment>
-                );
-              })}
-          </tbody>
+                        {row.seealso !== null && row.seealso !== "null" && (
+                          <td>
+                            <a
+                              style={{
+                                color: "blue",
+                                borderBottom: "1px solid blue",
+                              }}
+                            >
+                              SeeAlso {row.seealso}
+                            </a>
+                          </td>
+                        )}
+                        {row.see !== null && row.see !== "null" && (
+                          <td>
+                            <a
+                              style={{
+                                color: "blue",
+                                borderBottom: "1px solid blue",
+                              }}
+                            >
+                              See {row.see}
+                            </a>
+                          </td>
+                        )}
+                        {row.code !== null && row.code !== "null" && (
+                          <td>
+                            <a
+                              style={{
+                                color: "blue",
+                                borderBottom: "1px solid blue",
+                              }}
+                              onClick={() => {
+                                handleCodeClick(row.code);
+                                scrollToTop();
+                              }}
+                            >
+                              {row.code}
+                            </a>
+                          </td>
+                        )}
+                      </tr>
+                      {renderChildRows(row)}
+                    </Fragment>
+                  );
+                })}
+            </tbody>
+          </table>
           <Box sx={{ ml: -10 }}>{isLoading && <Loads />}</Box>
         </div>
       </Box>

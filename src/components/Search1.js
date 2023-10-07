@@ -23,7 +23,7 @@ const Search1 = (props) => {
   const [isDrugCodeClicked, setisDrugCodeClicked] = useState(false);
 
   global.tokens = localStorage.getItem("emed");
-  console.log(global.tokens);
+  // console.log(global.tokens);
 
   const handleChange = (event) => {
     const newValue = event.target.value;
@@ -44,7 +44,7 @@ const Search1 = (props) => {
     setIsValueSelected(false);
     setIsValueSelected(null);
   };
-  console.log(word);
+  // console.log(word);
 
   useEffect(() => {
     global.inatbleresult = null;
@@ -71,7 +71,7 @@ const Search1 = (props) => {
               const data = await response.json();
               combinedData.push(...data);
             } else {
-              console.error("Failed to fetch data from the first API");
+              // console.error("Failed to fetch data from the first API");
             }
           } else if (
             /^[a-zA-Z]{2,}\s[a-zA-Z]{1,}\s[a-zA-Z]{1,}$/.test(word) ||
@@ -92,7 +92,7 @@ const Search1 = (props) => {
               const data = await response.json();
               combinedData.push(...data);
             } else {
-              console.error("Failed to fetch data from the first API");
+              // console.error("Failed to fetch data from the first API");
             }
 
             const alterResponse = await fetch(
@@ -108,9 +108,9 @@ const Search1 = (props) => {
             if (alterResponse.ok) {
               const alterData = await alterResponse.json();
               combinedData.push(...alterData);
-              console.log("Second API response:", alterData);
+              // console.log("Second API response:", alterData);
             } else {
-              console.error("Failed to fetch data from the second API");
+              // console.error("Failed to fetch data from the second API");
             }
             const thirdResponse = await fetch(
               `/codes/${word}/description?version=${global.years}`,
@@ -125,26 +125,26 @@ const Search1 = (props) => {
             if (thirdResponse.ok) {
               const alterrData = await thirdResponse.json();
               combinedData.push(...alterrData);
-              console.log("third API response:", alterrData);
+              // console.log("third API response:", alterrData);
             } else {
-              console.error("Failed to fetch data from the third API");
+              // console.error("Failed to fetch data from the third API");
             }
           } else {
-            console.error("Invalid input");
+            // console.error("Invalid input");
           }
           setResult(combinedData);
         } else {
           setResult([]);
         }
       } catch (error) {
-        console.error("Error:", error);
+        // console.error("Error:", error);
       }
     };
     fetchBooks();
   }, [word]);
-  console.log(result);
-  console.log("our result is", result);
-  console.log(first);
+  // console.log(result);
+  // console.log("our result is", result);
+  // console.log(first);
   global.values = first;
   global.words = word;
 
@@ -243,6 +243,7 @@ const Search1 = (props) => {
           gap={5}
         >
           <TextField
+            id="search-input"
             style={{ width: "100%" }}
             sx={{
               "& input": {

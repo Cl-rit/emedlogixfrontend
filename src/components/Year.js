@@ -77,8 +77,8 @@ export const Year = () => {
     <form onSubmit={handleSubmit}>
       <FormControl sx={{ ml: componentMargin }}>
         <StyledSelect
-          labelId="year-dropdown-label"
           id="year-dropdown"
+          labelId="year-dropdown-label"
           open={isOpen}
           onClose={() => setIsOpen(false)}
           onOpen={() => setIsOpen(true)}
